@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>鸿丰稼动率系统</title>
 	<meta charset="utf-8"/>
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -10,16 +10,41 @@
 	<link rel="icon" type="image/x-icon" href="image/logos.jpg"/>
 	<link rel="stylesheet" type="text/css" href="css/index.css"/>
 	<script type="text/javascript" src="js/wm.js"></script>
+	<script type="text/javascript" src="js/object.js"></script>
+	<script type="text/javascript" src="js/vue.js"></script>
 </head>
 <body>
-	<header>
+	<header id="index_header">
 		选择日期：<input type="date"/>
 	</header>
+	<div class="index_home" id="index_home">
+		<div class="index_home_left_item_head">
+			<div class="index_home_left_item_left_head">设备组</div>
+			<div class="index_home_left_item_center_head">浙江</div>
+			<div class="index_home_left_item_right_head">东莞</div>
+			<div class="clear"></div>
+		</div>
+		<div class="index_home_left_item" v-for="product in products">
+			<div class="index_home_left_item_left">{{product.name}}</div>
+			<div class="index_home_left_item_center">
+				<span>{{product.jiacon}}%</span>
+			</div>
+			<div class="index_home_left_item_right">
+				<span>{{product.dongcon}}%</span>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
 	<footer>
 		<div></div>
 		<div></div>
 		<div></div>
 	</footer>
+	<!-- <div class="fixed">
+		<div class="fixed_body">
+			<div class="fixed_body_item"></div>
+		</div>
+	</div> -->
 	<script type="text/javascript" src="js/index.js"></script>
 </body>
 </html>
