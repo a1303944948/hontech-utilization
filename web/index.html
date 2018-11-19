@@ -15,7 +15,7 @@
 </head>
 <body>
 	<header id="index_header">
-		选择日期：<input type="date"/>
+		<input class="index_header_int" type="date"/>
 	</header>
 	<div class="index_home" id="index_home">
 		<div class="index_home_left_item_head">
@@ -26,19 +26,31 @@
 		</div>
 		<div class="index_home_left_item" v-for="product in products">
 			<div class="index_home_left_item_left">{{product.name}}</div>
-			<div class="index_home_left_item_center">
-				<span>{{product.jiacon}}%</span>
+			<div class="index_home_left_item_center" v-if="parseInt(product.jiacon) >= 20">
+				<span class="suc" v-if="parseInt(product.jiacon) >= parseInt(product.dongcon)">{{product.jiacon}}</span>
+				<span class="fal" v-else>{{product.jiacon}}</span>
 			</div>
-			<div class="index_home_left_item_right">
-				<span>{{product.dongcon}}%</span>
+			<div class="index_home_left_item_center" v-else>
+				<span class="suc" v-if="parseInt(product.jiacon) >= parseInt(product.dongcon)" style="color: #303030">{{product.jiacon}}</span>
+				<span class="fal" v-else style="color: #303030">{{product.jiacon}}</span>
+			</div>
+			<div class="index_home_left_item_right" v-if="parseInt(product.dongcon) >= 20">
+				<span class="fal" v-if="parseInt(product.jiacon) > parseInt(product.dongcon)">{{product.dongcon}}</span>
+				<span class="suc" v-else>{{product.dongcon}}</span>
+			</div>
+			<div class="index_home_left_item_right" v-else>
+				<span class="fal" v-if="parseInt(product.jiacon) > parseInt(product.dongcon)" style="color: #303030">{{product.dongcon}}</span>
+				<span class="suc" v-else style="color: #303030">{{product.dongcon}}</span>
 			</div>
 			<div class="clear"></div>
 		</div>
+		<div class="footer"></div>
 	</div>
 	<footer>
-		<div></div>
-		<div></div>
-		<div></div>
+		<div class="footera footers footerss"><img src="image/zla.png"/>总览</div>
+		<div class="footerb footers"><img src="image/pm.png"/>排名</div>
+		<div class="footerc footers"><img src="image/jl.png"/>记录</div>
+		<div class="clear"></div>
 	</footer>
 	<!-- <div class="fixed">
 		<div class="fixed_body">
@@ -46,5 +58,25 @@
 		</div>
 	</div> -->
 	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript">
+		for(var i = 0; i < c('index_home_left_item_left').length; i++){
+		    c('index_home_left_item_center')[i].style.height = c('index_home_left_item_left')[i].clientHeight + 1 + 'px';
+		    c('index_home_left_item_center')[i].style.lineHeight = c('index_home_left_item_left')[i].clientHeight + 1 + 'px';
+		    c('index_home_left_item_center')[i].children[0].style.width = c('index_home_left_item_center')[i].children[0].innerHTML;
+		    c('index_home_left_item_right')[i].style.height = c('index_home_left_item_left')[i].clientHeight + 1 + 'px';
+		    c('index_home_left_item_right')[i].style.lineHeight = c('index_home_left_item_left')[i].clientHeight + 1 + 'px';
+		    c('index_home_left_item_right')[i].children[0].style.width = c('index_home_left_item_right')[i].children[0].innerHTML;
+		}
+		window.onresize = function(){
+		    for(var i = 0; i < c('index_home_left_item_left').length; i++){
+		        c('index_home_left_item_center')[i].style.height = c('index_home_left_item_left')[i].clientHeight + 1 + 'px';
+		        c('index_home_left_item_center')[i].style.lineHeight = c('index_home_left_item_left')[i].clientHeight + 1 + 'px';
+		        c('index_home_left_item_center')[i].children[0].style.width = c('index_home_left_item_center')[i].children[0].innerHTML;
+		        c('index_home_left_item_right')[i].style.height = c('index_home_left_item_left')[i].clientHeight + 1 + 'px';
+		        c('index_home_left_item_right')[i].style.lineHeight = c('index_home_left_item_left')[i].clientHeight + 1 + 'px';
+		        c('index_home_left_item_right')[i].children[0].style.width = c('index_home_left_item_right')[i].children[0].innerHTML;
+		    }
+		}
+	</script>
 </body>
 </html>

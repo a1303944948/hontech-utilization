@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>鸿丰稼动率系统</title>
+	<meta charset="utf-8"/>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no, email=no" />
+	<link rel="icon" type="image/x-icon" href="image/logos.jpg"/>
+	<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<script type="text/javascript" src="js/wm.js"></script>
+	<script type="text/javascript" src="js/object.js"></script>
+	<script type="text/javascript" src="js/vue.js"></script>
+</head>
+<body>
+	<header id="record_header">
+		<select>
+			<option value="">设备选择...</option>
+			<option value="dg">折床001</option>
+			<option value="dg">折床002</option>
+			<option value="dg">折床003</option>
+			<option value="dg">焊接机械臂001</option>
+		</select>
+		<input  class="record_header_int" type="date"/>
+	</header>
+	<div class="record_home" id="record_home">
+		<table frame="void">
+			<tr>
+				<td>设备</td>
+				<td>时间</td>
+				<td>次数/S</td>
+			</tr>
+			<tr v-for="product in products">
+				<td>{{product.name}}</td>
+				<td>{{product.dateTime}}</td>
+				<td>{{product.total}}</td>
+			</tr>
+		</table>
+		<div class="footer"></div>
+	</div>
+	<footer>
+		<div class="footera footers"><img src="image/zl.png"/>总览</div>
+		<div class="footerb footers"><img src="image/pm.png"/>排名</div>
+		<div class="footerc footers footerss"><img src="image/jla.png"/>记录</div>
+		<div class="clear"></div>
+	</footer>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript">
+	</script>
+</body>
+</html>

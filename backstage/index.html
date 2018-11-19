@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
   <title>鸿丰集团稼动率系统</title>
   <link rel="stylesheet" href="layui/css/layui.css" media="all"/>
+  <script type="text/javascript" src="jquery-3.3.1.js"></script>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -41,33 +42,33 @@
   <div class="layui-body">
     <!-- 内容主体区域 -->
     <div style="padding: 15px; padding-top: 30px;">
-      <form class="layui-form layui-form-pane" action="">
+      <form class="layui-form layui-form-pane">
         <div class="layui-form-item">
           <label class="layui-form-label">设备编号</label>
           <div class="layui-input-block">
-            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入设备编号" class="layui-input">
+            <input type="text" id="devcode" lay-verify="title" autocomplete="off" placeholder="请输入设备编号" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
           <label class="layui-form-label">设备名称</label>
           <div class="layui-input-block">
-            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入设备名称" class="layui-input">
+            <input type="text" id="devname" lay-verify="title" autocomplete="off" placeholder="请输入设备名称" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
           <label class="layui-form-label">稼动率基数</label>
           <div class="layui-input-block">
-            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入稼动率基数" class="layui-input">
+            <input type="text" id="cropmobility" lay-verify="title" autocomplete="off" placeholder="请输入稼动率基数" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
           <div class="layui-inline">
             <label class="layui-form-label">选择公司</label>
             <div class="layui-input-inline">
-              <select name="modules" lay-verify="required" lay-search="">
+              <select id="companyname" lay-verify="required" lay-search="">
                 <option value="">请选择公司</option>
-                <option value="1">浙江嘉丰</option>
-                <option value="2">东莞嘉丰</option>
+                <option value="zhejiang">浙江嘉丰</option>
+                <option value="dongguan">东莞嘉丰</option>
               </select>
             </div>
           </div>
@@ -76,10 +77,10 @@
           <div class="layui-inline">
             <label class="layui-form-label">设备类别</label>
             <div class="layui-input-inline">
-              <select name="modules" lay-verify="required" lay-search="">
+              <select id="devtypeid" lay-verify="required" lay-search="">
                 <option value="">请选择设备类别</option>
-                <option value="1">折床</option>
-                <option value="2">机械臂</option>
+                <option value="zhechuang,折床">折床</option>
+                <option value="jixiebi,机械臂">机械臂</option>
               </select>
             </div>
           </div>
@@ -87,24 +88,24 @@
         <div class="layui-form-item">
           <label class="layui-form-label">所在部门</label>
           <div class="layui-input-block">
-            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入所在部门" class="layui-input">
+            <input type="text" id="deptname" lay-verify="title" autocomplete="off" placeholder="请输入所在部门" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
           <label class="layui-form-label">负责人</label>
           <div class="layui-input-block">
-            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入负责人" class="layui-input">
+            <input type="text" id="personinchargename" lay-verify="title" autocomplete="off" placeholder="请输入负责人" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
           <label class="layui-form-label">设备组</label>
           <div class="layui-input-block">
-            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入设备组" class="layui-input">
+            <input type="text" id="devgroupname" lay-verify="title" autocomplete="off" placeholder="请输入设备组" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
           <div class="layui-input-block">
-            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            <button class="layui-btn" id="submit" lay-submit="" lay-filter="demo1">立即提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
           </div>
         </div>
@@ -112,65 +113,70 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $('#submit').on('click',function(){
+    var devcode = $('#devcode').val();
+    var devname = $('#devname').val();
+    var cropmobility = $('#cropmobility').val();
+    var companyname = $('#companyname').val();
+    var devtypecode = $('#devtypeid').val().split(',')[0];
+    var devtypename = $('#devtypeid').val().split(',')[1];
+    var deptname = $('#deptname').val();
+    var personinchargename = $('#personinchargename').val();
+    var devgroupname = $('#devgroupname').val();
+    console.log(devcode);
+    console.log(devname);
+    console.log(cropmobility);
+    console.log(companyname);
+    console.log(devtypeid);
+    console.dir(devtypename);
+    console.log(deptname);
+    console.log(personinchargename);
+    console.log(devgroupname);
+    $.ajax({
+      type: 'post',
+      url: 'http://10.1.8.45:8080/com/cli/type/add.json',
+      data: {
+        devcode: devcode,
+        devname: devname,
+        cropmobility: cropmobility,
+        companyname: companyname,
+        devtypecode: devtypecode,
+        devtypename: devtypename,
+        deptname: deptname,
+        personinchargename: personinchargename,
+        devgroupname: devgroupname,
+      },
+      success: function(data){
+        console.log(data);
+        if(data.result == 1){
+          layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.alert('提交成功');
+          })
+        }else{
+          layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.alert('提交失败');
+          })
+        }
+      }
+    })
+    return false;
+  })
+</script>
 <script src="layui/layui.js"></script>
 <script>
 //JavaScript代码区域
 layui.use(['form', 'layedit', 'laydate'], function(){
-  var form = layui.form
-  ,layer = layui.layer
-  ,layedit = layui.layedit
-  ,laydate = layui.laydate;
-  
+
   //日期
-  laydate.render({
-    elem: '#date'
-  });
-  laydate.render({
-    elem: '#date1'
-  });
   
   //创建一个编辑器
-  var editIndex = layedit.build('LAY_demo_editor');
  
   //自定义验证规则
-  form.verify({
-    title: function(value){
-      if(value.length < 1){
-        return '不能为空';
-      }
-    }
-    ,pass: [/(.+){6,12}$/, '密码必须6到12位']
-    ,content: function(value){
-      layedit.sync(editIndex);
-    }
-  });
-  
-  //监听指定开关
-  form.on('switch(switchTest)', function(data){
-    layer.msg('开关checked：'+ (this.checked ? 'true' : 'false'), {
-      offset: '6px'
-    });
-    layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
-  });
-  
-  //监听提交
-  form.on('submit(demo1)', function(data){
-    layer.alert(JSON.stringify(data.field), {
-      title: '最终的提交信息'
-    })
-    return false;
-  });
  
   //表单初始赋值
-  form.val('example', {
-    "username": "贤心" // "name": "value"
-    ,"password": "123456"
-    ,"interest": 1
-    ,"like[write]": true //复选框选中状态
-    ,"close": true //开关状态
-    ,"sex": "女"
-    ,"desc": "我爱 layui"
-  })
 });
 </script>
 </body>

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
   <title>鸿丰集团稼动率系统</title>
   <link rel="stylesheet" href="layui/css/layui.css"/>
+  <script type="text/javascript" src="jquery-3.3.1.js"></script>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -41,22 +42,22 @@
   <div class="layui-body">
     <!-- 内容主体区域 -->
     <div style="padding: 15px;">
-      <form class="layui-form layui-form-pane" action="">
+      <form class="layui-form layui-form-pane">
         <div class="layui-form-item">
           <label class="layui-form-label">类别编号</label>
           <div class="layui-input-block">
-            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入类别编号" class="layui-input">
+            <input type="text" id="number" lay-verify="title" autocomplete="off" placeholder="请输入类别编号" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
           <label class="layui-form-label">类别名称</label>
           <div class="layui-input-block">
-            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入类别名称" class="layui-input">
+            <input type="text" id="name" lay-verify="title" autocomplete="off" placeholder="请输入类别名称" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
           <div class="layui-input-block">
-            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            <button class="layui-btn" id="submit">立即提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
           </div>
         </div>
@@ -66,64 +67,36 @@
 </div>
 <script src="layui/layui.js"></script>
 <script>
-//JavaScript代码区域
-layui.use(['form', 'layedit', 'laydate'], function(){
-  var form = layui.form
-  ,layer = layui.layer
-  ,layedit = layui.layedit
-  ,laydate = layui.laydate;
-  
-  //日期
-  laydate.render({
-    elem: '#date'
-  });
-  laydate.render({
-    elem: '#date1'
-  });
-  
-  //创建一个编辑器
-  var editIndex = layedit.build('LAY_demo_editor');
- 
-  //自定义验证规则
-  form.verify({
-    title: function(value){
-      if(value.length < 1){
-        return '不能为空';
+  $('#submit').click(function(){
+    var number = $('#number').val();
+    var name = $('#name').val();
+    console.log(number);
+    console.log(name);
+    $.ajax({
+      type: 'post',
+      url: 'http://10.1.8.45:8080/com/cli/type/add.json',
+      data: {
+        devtypecode: number,
+        devtypename: name,
+      },
+      success: function(data){
+        console.log(data);
+        if(data.result == 1){
+          layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.alert('提交成功');
+          })
+        }else{
+          layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.alert('提交失败');
+          })
+        }
       }
-    }
-    ,pass: [/(.+){6,12}$/, '密码必须6到12位']
-    ,content: function(value){
-      layedit.sync(editIndex);
-    }
-  });
-  
-  //监听指定开关
-  form.on('switch(switchTest)', function(data){
-    layer.msg('开关checked：'+ (this.checked ? 'true' : 'false'), {
-      offset: '6px'
-    });
-    layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
-  });
-  
-  //监听提交
-  form.on('submit(demo1)', function(data){
-    layer.alert(JSON.stringify(data.field), {
-      title: '最终的提交信息'
     })
     return false;
-  });
- 
-  //表单初始赋值
-  form.val('example', {
-    "username": "贤心" // "name": "value"
-    ,"password": "123456"
-    ,"interest": 1
-    ,"like[write]": true //复选框选中状态
-    ,"close": true //开关状态
-    ,"sex": "女"
-    ,"desc": "我爱 layui"
   })
-});
+//JavaScript代码区域
 </script>
 </body>
 </html>
