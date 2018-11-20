@@ -14,69 +14,108 @@
 	<script type="text/javascript" src="js/vue.js"></script>
 </head>
 <body>
-	<header id="index_header">
-		<input class="index_header_int" type="date"/>
+	<header id="ranking_header">
+		<select>
+			<option value="">公司</option>
+			<option value="zj">浙江</option>
+			<option value="dg">东莞</option>
+		</select>
+		<select>
+			<option value="">设备选择...</option>
+			<option value="dg">35吨折床</option>
+			<option value="dg">50吨折床</option>
+			<option value="dg">75吨折床</option>
+			<option value="dg">焊接机械臂</option>
+		</select>
+		<input  class="index_header_int" type="date"/>
 	</header>
-	<div class="index_home" id="index_home">
-		<div class="index_home_left_item_head">
-			<div class="index_home_left_item_left_head">设备组</div>
-			<div class="index_home_left_item_center_head">浙江</div>
-			<div class="index_home_left_item_right_head">东莞</div>
-			<div class="clear"></div>
-		</div>
-		<div class="index_home_left_item" v-for="product in products">
-			<div class="index_home_left_item_left">{{product.name}}</div>
-			<div class="index_home_left_item_center" v-if="parseInt(product.jiacon) >= 20">
-				<span class="suc" v-if="parseInt(product.jiacon) >= parseInt(product.dongcon)">{{product.jiacon}}</span>
-				<span class="fal" v-else>{{product.jiacon}}</span>
+	<div class="ranking_home" id="ranking_home">
+		<div class="ranking_home_body" v-for="(product,index) in products">
+			<div class="ranking_home_head">
+				<div class="ranking_home_head_div" style="width: 12%; height: 100%;">序号</div>
+				<div class="ranking_home_head_div" style="width: 25%; height: 100%;">设备编号</div>
+				<div class="ranking_home_head_div" style="width: 21%; height: 100%;">领班</div>
+				<div class="ranking_home_head_div" style="width: 21%; height: 100%;">组长</div>
+				<div class="ranking_home_head_div" style="width: 21%; height: 100%;">经理</div>
+				<div class="clear"></div>
 			</div>
-			<div class="index_home_left_item_center" v-else>
-				<span class="suc" v-if="parseInt(product.jiacon) >= parseInt(product.dongcon)" style="color: #303030">{{product.jiacon}}</span>
-				<span class="fal" v-else style="color: #303030">{{product.jiacon}}</span>
+			<div class="ranking_home_body_item">
+				<div class="ranking_home_body_item_div" style="width: 12%; height: 100%;">{{index+1}}</div>
+				<div class="ranking_home_body_item_div" style="width: 25%; height: 100%;">{{product.name}}</div>
+				<div class="ranking_home_body_item_div" style="width: 21%; height: 100%;">{{product.foreman}}</div>
+				<div class="ranking_home_body_item_div" style="width: 21%; height: 100%;">{{product.leader}}</div>
+				<div class="ranking_home_body_item_div" style="width: 21%; height: 100%;">{{product.manager}}</div>
 			</div>
-			<div class="index_home_left_item_right" v-if="parseInt(product.dongcon) >= 20">
-				<span class="fal" v-if="parseInt(product.jiacon) > parseInt(product.dongcon)">{{product.dongcon}}</span>
-				<span class="suc" v-else>{{product.dongcon}}</span>
+			<div class="ranking_home_body_item_context">
+				<table>
+					<tr>
+						<td style="background-color: red;">稼动率</td>
+						<td style="background-color: orange;">总做功</td>
+						<td style="background-color: green;">标准</td>
+					</tr>
+					<tr>
+						<td style="background-color: red;">{{product.text}}</td>
+						<td style="background-color: orange;">{{product.total}}</td>
+						<td style="background-color: green;">{{product.nomal}}</td>
+					</tr>
+				</table>
+				<table frame="void">
+					<tr>
+						<td>时间段</td>
+						<td>首次做功</td>
+						<td>末次做功</td>
+						<td>做功次数</td>
+					</tr>
+					<tr>
+						<td>上午</td>
+						<td>{{product.morningStart}}</td>
+						<td>{{product.morningEnd}}</td>
+						<td>{{product.morningTotal}}</td>
+					</tr>
+					<tr>
+						<td>下午</td>
+						<td>{{product.afternoonStart}}</td>
+						<td>{{product.afternoonEnd}}</td>
+						<td>{{product.afternoonTotal}}</td>
+					</tr>
+					<tr>
+						<td>晚上</td>
+						<td>{{product.nightStart}}</td>
+						<td>{{product.nightEnd}}</td>
+						<td>{{product.nightTotal}}</td>
+					</tr>
+				</table>
 			</div>
-			<div class="index_home_left_item_right" v-else>
-				<span class="fal" v-if="parseInt(product.jiacon) > parseInt(product.dongcon)" style="color: #303030">{{product.dongcon}}</span>
-				<span class="suc" v-else style="color: #303030">{{product.dongcon}}</span>
-			</div>
-			<div class="clear"></div>
 		</div>
 		<div class="footer"></div>
 	</div>
 	<footer>
-		<div class="footera footers footerss"><img src="image/zla.png"/>总览</div>
-		<div class="footerb footers"><img src="image/pm.png"/>排名</div>
+		<!-- <div class="footera footers"><img src="image/zl.png"/>总览</div> -->
+		<div class="footerb footers footerss"><img src="image/pma.png"/>排名</div>
 		<div class="footerc footers"><img src="image/jl.png"/>记录</div>
 		<div class="clear"></div>
 	</footer>
-	<!-- <div class="fixed">
-		<div class="fixed_body">
-			<div class="fixed_body_item"></div>
-		</div>
-	</div> -->
 	<script type="text/javascript" src="js/index.js"></script>
 	<script type="text/javascript">
-		for(var i = 0; i < c('index_home_left_item_left').length; i++){
-		    c('index_home_left_item_center')[i].style.height = c('index_home_left_item_left')[i].clientHeight + 1 + 'px';
-		    c('index_home_left_item_center')[i].style.lineHeight = c('index_home_left_item_left')[i].clientHeight + 1 + 'px';
-		    c('index_home_left_item_center')[i].children[0].style.width = c('index_home_left_item_center')[i].children[0].innerHTML;
-		    c('index_home_left_item_right')[i].style.height = c('index_home_left_item_left')[i].clientHeight + 1 + 'px';
-		    c('index_home_left_item_right')[i].style.lineHeight = c('index_home_left_item_left')[i].clientHeight + 1 + 'px';
-		    c('index_home_left_item_right')[i].children[0].style.width = c('index_home_left_item_right')[i].children[0].innerHTML;
-		}
-		window.onresize = function(){
-		    for(var i = 0; i < c('index_home_left_item_left').length; i++){
-		        c('index_home_left_item_center')[i].style.height = c('index_home_left_item_left')[i].clientHeight + 1 + 'px';
-		        c('index_home_left_item_center')[i].style.lineHeight = c('index_home_left_item_left')[i].clientHeight + 1 + 'px';
-		        c('index_home_left_item_center')[i].children[0].style.width = c('index_home_left_item_center')[i].children[0].innerHTML;
-		        c('index_home_left_item_right')[i].style.height = c('index_home_left_item_left')[i].clientHeight + 1 + 'px';
-		        c('index_home_left_item_right')[i].style.lineHeight = c('index_home_left_item_left')[i].clientHeight + 1 + 'px';
-		        c('index_home_left_item_right')[i].children[0].style.width = c('index_home_left_item_right')[i].children[0].innerHTML;
-		    }
-		}
+		var rankingHomeBodyItem = c('ranking_home_body_item');	//设备列表
+		var rankingHomeBodyItemContext = c('ranking_home_body_item_context');	//设备详情
+		/*var count = -1;
+		for(var i = 0; i < rankingHomeBodyItem.length; i++){
+			(function(q){
+				rankingHomeBodyItem[q].children[2].ontouchend = function(){
+					for(var j = 0; j < rankingHomeBodyItemContext.length; j++){
+						rankingHomeBodyItemContext[j].style.height = "0rem";
+					}
+					if(count == q){
+						count = -1;
+						rankingHomeBodyItemContext[q].style.height = "0rem";
+					}else{
+						count = q;
+						rankingHomeBodyItemContext[q].style.height = "10rem";
+					}
+				}
+			})(i)
+		}*/
 	</script>
 </body>
 </html>

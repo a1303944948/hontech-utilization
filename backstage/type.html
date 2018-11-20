@@ -29,13 +29,7 @@
   <div class="layui-side layui-bg-black">
     <div class="layui-side-scroll">
       <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-        <li class="layui-nav-item layui-nav-itemed"><a class="" href="javascript:;">所有商品</a></li>
-        <li class="layui-nav-item"><a href="javascript:;">解决方案</a></li>
-        <li class="layui-nav-item"><a href="">云市场</a></li>
-        <li class="layui-nav-item layui-nav-itemed"><a class="" href="javascript:;">所有商品</a></li>
-        <li class="layui-nav-item"><a href="javascript:;">解决方案</a></li>
-        <li class="layui-nav-item"><a href="">云市场</a></li>
+      <ul class="layui-nav layui-nav-tree" id="layui-nav" lay-filter="test">
       </ul>
     </div>
   </div>
@@ -95,6 +89,36 @@
       }
     })
     return false;
+  })
+  $.ajax({
+    type: 'post',
+    url: 'http://10.1.8.45:8080/com/cli/type/select.json',
+    data: {},
+    success: function(data){
+      console.log(data);
+      var layuiNav = $('#layui-nav')[0];
+      for(var i = 0; i < data.listData.length; i++){
+        var li = document.createElement('li');
+        li.className = 'layui-nav-item layui-nav-itemed list_li';
+        li.setAttribute('data-value',data.listData[i].devtypeid);
+        var object = new Object();
+        var a = document.createElement('a');
+        a.href = 'javascript:void(0)';
+        a.innerHTML = data.listData[i].devtypename;
+        li.appendChild(a);
+        layuiNav.appendChild(li);
+      }
+      var number = $('#number');
+      var name = $('#name');
+      for(var i = 0; i < document.getElementsByClassName('list_li').length; i++){
+        (function(q){
+          document.getElementsByClassName('list_li')[q].onclick = function(){
+            number.val(this.dataset.value);
+            name.val(this.children[0].innerHTML);
+          }
+        })(i)
+      }
+    }
   })
 //JavaScript代码区域
 </script>

@@ -29,14 +29,7 @@
   <div class="layui-side layui-bg-black">
     <div class="layui-side-scroll">
       <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-        <li class="layui-nav-item layui-nav-itemed"><a class="" href="javascript:;">所有商品</a></li>
-        <li class="layui-nav-item"><a href="javascript:;">解决方案</a></li>
-        <li class="layui-nav-item"><a href="">云市场</a></li>
-        <li class="layui-nav-item layui-nav-itemed"><a class="" href="javascript:;">所有商品</a></li>
-        <li class="layui-nav-item"><a href="javascript:;">解决方案</a></li>
-        <li class="layui-nav-item"><a href="">云市场</a></li>
-      </ul>
+      <ul class="layui-nav layui-nav-tree" id="layui-nav" lay-filter="test"></ul>
     </div>
   </div>
   <div class="layui-body">
@@ -67,8 +60,8 @@
             <div class="layui-input-inline">
               <select id="companyname" lay-verify="required" lay-search="">
                 <option value="">请选择公司</option>
-                <option value="zhejiang">浙江嘉丰</option>
-                <option value="dongguan">东莞嘉丰</option>
+                <option value="zhejiang,浙江嘉丰">浙江嘉丰</option>
+                <option value="dongguan,东莞嘉丰">东莞嘉丰</option>
               </select>
             </div>
           </div>
@@ -92,9 +85,21 @@
           </div>
         </div>
         <div class="layui-form-item">
-          <label class="layui-form-label">负责人</label>
+          <label class="layui-form-label">领班</label>
           <div class="layui-input-block">
             <input type="text" id="personinchargename" lay-verify="title" autocomplete="off" placeholder="请输入负责人" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">组长</label>
+          <div class="layui-input-block">
+            <input type="text" id="personinchargename" lay-verify="title" autocomplete="off" placeholder="请输入组长" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">经理</label>
+          <div class="layui-input-block">
+            <input type="text" id="personinchargename" lay-verify="title" autocomplete="off" placeholder="请输入经理" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
@@ -128,14 +133,14 @@
     console.log(devname);
     console.log(cropmobility);
     console.log(companyname);
-    console.log(devtypeid);
+    console.log(devtypecode);
     console.dir(devtypename);
     console.log(deptname);
     console.log(personinchargename);
     console.log(devgroupname);
     $.ajax({
       type: 'post',
-      url: 'http://10.1.8.45:8080/com/cli/type/add.json',
+      url: 'http://10.1.8.45:8080/com/dev/add.json',
       data: {
         devcode: devcode,
         devname: devname,
@@ -163,6 +168,52 @@
       }
     })
     return false;
+  })
+  $.ajax({
+    type: 'post',
+    url: 'http://10.1.8.45:8080/com/dev/select.json',
+    data: {},
+    success: function(data){
+      console.log(data);
+      var layuiNav = $('#layui-nav')[0];
+      for(var i = 0; i < data.listData.length; i++){
+        var li = document.createElement('li');
+        li.className = 'layui-nav-item layui-nav-itemed list_li';
+        li.setAttribute('data-value',JSON.stringify(data.listData[i]));
+        var object = new Object();
+        var a = document.createElement('a');
+        a.href = 'javascript:void(0)';
+        a.innerHTML = data.listData[i].devtypename;
+        li.appendChild(a);
+        layuiNav.appendChild(li);
+      }
+      var devcode = $('#devcode');
+      var devname = $('#devname');
+      var cropmobility = $('#cropmobility');
+      var companyname = $('#companyname');
+      var devtypecode = $('#devtypeid');
+      var deptname = $('#deptname');
+      var personinchargename = $('#personinchargename');
+      var devgroupname = $('#devgroupname');
+      for(var i = 0; i < document.getElementsByClassName('list_li').length; i++){
+        (function(q){
+          document.getElementsByClassName('list_li')[q].onclick = function(){
+            var that = JSON.parse(this.dataset.value);
+            devcode.val(that.devcode);
+            devname.val(that.devname);
+            cropmobility.val(that.crop_mobility_radix);
+            companyname.val(that.companyname.split(',')[0]);
+            console.log(that.companyname);
+            companyname.next('.layui-form-select').children('.layui-select-title').children('.layui-input').val(that.companyname.split(',')[1]);
+            devtypecode.val(that.devtypeid+','+that.devtypename);
+            devtypecode.next('.layui-form-select').children('.layui-select-title').children('.layui-input').val(that.devtypename);
+            deptname.val(that.deptname);
+            personinchargename.val(that.personinchargename);
+            devgroupname.val(that.devgroupname);
+          }
+        })(i)
+      }
+    }
   })
 </script>
 <script src="layui/layui.js"></script>

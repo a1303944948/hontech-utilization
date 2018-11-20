@@ -19,9 +19,9 @@ var appz = new Vue({
 
 
 //以下为页面公共方法
-c('footera')[0].ontouchend = function(){location.href = 'index.html'};
-c('footerb')[0].ontouchend = function(){location.href = 'ranking.html'};
+c('footerb')[0].ontouchend = function(){location.href = 'index.html'};
 c('footerc')[0].ontouchend = function(){location.href = 'record.html'};
+
 
 //日期选择默认今天
 var defaultDate = c('index_header_int');
