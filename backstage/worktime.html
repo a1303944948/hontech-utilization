@@ -26,21 +26,62 @@
       <li class="layui-nav-item"><a href="">退出</a></li>
     </ul>
   </div>
-  <div class="layui-side layui-bg-black"></div>
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree" id="layui-nav" lay-filter="test">
+        <li class="layui-nav-item layui-nav-itemed list_li" value="zjjf"><a href="javaScript:void(0);">浙江嘉丰</a></li>
+        <li class="layui-nav-item layui-nav-itemed list_li" value="dgjf"><a href="javaScript:void(0);">东莞嘉丰</a></li>
+      </ul>
+    </div>
+  </div>
   <div class="layui-body">
     <!-- 内容主体区域 -->
-    <div style="padding: 15px;">
-      
+    <div id="layui-form-block" style="padding: 15px;">
+      <h3>工作时间：</h3>
+      <form class="layui-form-clone layui-form layui-form-pane" style="display: none">
+        <div class="layui-form-item" style="width: 300px !important; display: inline-block;">
+          <label class="layui-form-label">开始时间</label>
+          <div class="layui-input-block">
+            <input type="text" id="conversion" lay-verify="title" autocomplete="off" placeholder="请输入开始时间" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item" style="width: 300px !important; display: inline-block;">
+          <label class="layui-form-label">结束时间</label>
+          <div class="layui-input-block">
+            <input type="text" id="widening" lay-verify="title" autocomplete="off" placeholder="请输入结束时间" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item" style="width: 300px !important; display: inline-block;">
+          <label class="layui-form-label">时间段名称</label>
+          <div class="layui-input-block">
+            <input type="text" id="widening" lay-verify="title" autocomplete="off" placeholder="请输入时间段名称" class="layui-input">
+          </div>
+        </div>
+        <button class="layui-btn layui-btn-primary delete" type="button" style="margin-left: 15px;">删除</button>
+        <div style="clear: both;"></div>
+      </form>
     </div>
+    <button class="layui-btn" id="creat" lay-submit="" style="margin-left: 15px;" lay-filter="demo1">添加时间段</button>
+    <button class="layui-btn" id="submit" lay-submit="" style="margin-left: 15px;" lay-filter="demo1">保存</button>
   </div>
 </div>
 <script src="layui/layui.js"></script>
 <script>
-//JavaScript代码区域
-layui.use('element', function(){
-  var element = layui.element;
-  
-});
-</script>
+  var Creat = $('#creat');
+  var Block = $('#layui-form-block');
+  var Delete = document.getElementsByClassName('delete');
+  Creat.click(function(){
+    Block.append($('.layui-form-clone:eq(0)').clone().css('display','block'));
+    console.log(Delete.length);
+    for(var i = 0; i < Delete.length; i++){
+      (function(q){
+        Delete[q].onclick = function(){
+          this.parentNode.parentNode.removeChild(this.parentNode);
+        }
+      })(i)
+    }
+  })
+  </script>
 </body>
 </html>

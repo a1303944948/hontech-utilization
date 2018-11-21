@@ -49,9 +49,21 @@
           </div>
         </div>
         <div class="layui-form-item">
-          <label class="layui-form-label">稼动率基数</label>
+          <label class="layui-form-label">稼动率标准</label>
           <div class="layui-input-block">
             <input type="text" id="cropmobility" lay-verify="title" autocomplete="off" placeholder="请输入稼动率基数" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">换算比例</label>
+          <div class="layui-input-block">
+            <input type="number" id="conversion" lay-verify="title" autocomplete="off" placeholder="请输入换算比例" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">宽放系数</label>
+          <div class="layui-input-block">
+            <input type="number" id="widening" lay-verify="title" autocomplete="off" placeholder="请输入宽放系数" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
@@ -60,8 +72,8 @@
             <div class="layui-input-inline">
               <select id="companyname" lay-verify="required" lay-search="">
                 <option value="">请选择公司</option>
-                <option value="zhejiang,浙江嘉丰">浙江嘉丰</option>
-                <option value="dongguan,东莞嘉丰">东莞嘉丰</option>
+                <option value="zjjf,浙江嘉丰">浙江嘉丰</option>
+                <option value="dgjf,东莞嘉丰">东莞嘉丰</option>
               </select>
             </div>
           </div>
@@ -84,12 +96,12 @@
             <input type="text" id="deptname" lay-verify="title" autocomplete="off" placeholder="请输入所在部门" class="layui-input">
           </div>
         </div>
-        <div class="layui-form-item">
+        <!-- <div class="layui-form-item">
           <label class="layui-form-label">领班</label>
           <div class="layui-input-block">
             <input type="text" id="personinchargename" lay-verify="title" autocomplete="off" placeholder="请输入负责人" class="layui-input">
           </div>
-        </div>
+        </div> -->
         <div class="layui-form-item">
           <label class="layui-form-label">组长</label>
           <div class="layui-input-block">
@@ -110,7 +122,7 @@
         </div> -->
         <div class="layui-form-item">
           <div class="layui-input-block">
-            <button class="layui-btn" id="submit" lay-submit="" lay-filter="demo1">立即提交</button>
+            <button class="layui-btn" id="submit" lay-submit="" type="button" lay-filter="demo1">立即提交</button>
             <button type="reset" id="rest" class="layui-btn layui-btn-primary">重置</button>
           </div>
         </div>
@@ -119,28 +131,34 @@
   </div>
 </div>
 <script type="text/javascript">
+  var count = 0;
   $('#submit').on('click',function(){
     var devcode = $('#devcode').val();
     var devname = $('#devname').val();
     var cropmobility = $('#cropmobility').val();
-    var companyname = $('#companyname').val();
+    var conversion = $('#conversion').val();
+    var widening = $('#widening').val();
+    var companyid = $('#companyname').val().split(',')[0];
+    var companyname = $('#companyname').val().split(',')[1];
     var devtypecode = $('#devtypeid').val().split(',')[0];
     var devtypename = $('#devtypeid').val().split(',')[1];
     var deptname = $('#deptname').val();
-    var personinchargename = $('#personinchargename').val();
+    //var personinchargename = $('#personinchargename').val();
     //var devgroupname = $('#devgroupname').val();
     var headman = $('#headman').val();
     var manager = $('#manager').val();
-    var count = 0;
     var objError = "";
     console.log(devcode);
     console.log(devname);
     console.log(cropmobility);
+    console.log(conversion);
+    console.log(widening);
+    console.log(companyid);
     console.log(companyname);
     console.log(devtypecode);
     console.dir(devtypename);
     console.log(deptname);
-    console.log(personinchargename);
+    //console.log(personinchargename);
     //console.log(devgroupname);
     console.log(headman);
     console.log(manager);
@@ -148,25 +166,31 @@
       objError += "设备编号不能为空<br/>";
     }
     if(devname == ""){
-      objError += "设备名称不能为空";
+      objError += "设备名称不能为空<br/>";
     }
     if(cropmobility == ""){
-      objError += "稼动率基数不能为空";
+      objError += "稼动率基数不能为空<br/>";
+    }
+    if(conversion == ""){
+      objError += "换算比例不能为空<br/>";
+    }
+    if(widening == ""){
+      objError += "宽放系数不能为空<br/>";
     }
     if(companyname == ""){
-      objError += "公司不能为空";
+      objError += "公司不能为空<br/>";
     }
     if(devtypecode == ""){
-      objError += "设备类别不能为空";
+      objError += "设备类别不能为空<br/>";
     }
     if(deptname == ""){
-      objError += "所在部门不能为空";
+      objError += "所在部门不能为空<br/>";
     }
-    if(personinchargename == ""){
+    /*if(personinchargename == ""){
       objError += "领班不能为空";
-    }
+    }*/
     if(headman == ""){
-      objError += "组长不能为空";
+      objError += "组长不能为空<br/>";
     }
     if(manager == ""){
       objError += "经理不能为空";
@@ -189,11 +213,14 @@
           devcode: devcode,
           devname: devname,
           cropmobility: cropmobility,
+          conversionratio: conversion,
+          coefficient: widening,
+          companyid: companyid,
           companyname: companyname,
           devtypecode: devtypecode,
           devtypename: devtypename,
           deptname: deptname,
-          personinchargename: personinchargename,
+          personinchargename: "",
           devgroupname: "",
           headman: headman,
           manager: manager,
@@ -221,12 +248,15 @@
           devcode: devcode,
           devname: devname,
           cropmobility: cropmobility,
+          conversionratio: conversion,
+          coefficient: widening,
+          companyid: companyid,
           companyname: companyname,
           devtypecode: devtypecode,
           devtypename: devtypename,
           deptname: deptname,
-          personinchargename: personinchargename,
-          devgroupname: devgroupname,
+          personinchargename: "",
+          devgroupname: "",
           headman: headman,
           manager: manager,
         },
@@ -269,6 +299,8 @@
       var devcode = $('#devcode');
       var devname = $('#devname');
       var cropmobility = $('#cropmobility');
+      var conversion = $('#conversion');
+      var widening = $('#widening');
       var companyname = $('#companyname');
       var devtypecode = $('#devtypeid');
       var deptname = $('#deptname');
@@ -283,14 +315,16 @@
             var that = JSON.parse(this.dataset.value);
             devcode.val(that.devcode);
             devname.val(that.devname);
+            conversion.val(that.conversionratio);
+            widening.val(that.coefficient);
             cropmobility.val(that.crop_mobility_radix);
-            companyname.val(that.companyname);
-            companyname.next('.layui-form-select').children('.layui-select-title').children('.layui-input').val(that.companyname.split(',')[1]);
+            companyname.val(that.companyid+','+that.companyname);
+            companyname.next('.layui-form-select').children('.layui-select-title').children('.layui-input').val(that.companyname);
             devtypecode.val(that.devtypeid+','+that.devtypename);
             devtypecode.next('.layui-form-select').children('.layui-select-title').children('.layui-input').val(that.devtypename);
             deptname.val(that.deptname);
-            personinchargename.val(that.personinchargename);
-            devgroupname.val(that.devgroupname);
+            //personinchargename.val(that.personinchargename);
+            //devgroupname.val(that.devgroupname);
             headman.val(that.headman);
             manager.val(that.manager);
           }
@@ -304,7 +338,8 @@
 </script>
 <script src="layui/layui.js"></script>
 <script>
-//JavaScript代码区域
+  //JavaScript代码区域
+  console.log(123);
 layui.use(['form', 'layedit', 'laydate'], function(){
 
   //日期

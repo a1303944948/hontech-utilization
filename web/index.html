@@ -27,7 +27,15 @@
 			<option value="dg">75吨折床</option>
 			<option value="dg">焊接机械臂</option>
 		</select>
-		<input  class="index_header_int" type="date"/>
+		<select>
+			<option value="">今天</option>
+			<option value="">昨天</option>
+			<option value="">本周</option>
+			<option value="">上周</option>
+			<option value="">本月</option>
+			<option value="">上月</option>
+			<option value="">自定义</option>
+		</select>
 	</header>
 	<div class="ranking_home" id="ranking_home">
 		<div class="ranking_home_body" v-for="(product,index) in products">
