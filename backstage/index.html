@@ -93,25 +93,25 @@
         <div class="layui-form-item">
           <label class="layui-form-label">组长</label>
           <div class="layui-input-block">
-            <input type="text" id="personinchargename" lay-verify="title" autocomplete="off" placeholder="请输入组长" class="layui-input">
+            <input type="text" id="headman" lay-verify="title" autocomplete="off" placeholder="请输入组长" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
           <label class="layui-form-label">经理</label>
           <div class="layui-input-block">
-            <input type="text" id="personinchargename" lay-verify="title" autocomplete="off" placeholder="请输入经理" class="layui-input">
+            <input type="text" id="manager" lay-verify="title" autocomplete="off" placeholder="请输入经理" class="layui-input">
           </div>
         </div>
-        <div class="layui-form-item">
+        <!-- <div class="layui-form-item">
           <label class="layui-form-label">设备组</label>
           <div class="layui-input-block">
             <input type="text" id="devgroupname" lay-verify="title" autocomplete="off" placeholder="请输入设备组" class="layui-input">
           </div>
-        </div>
+        </div> -->
         <div class="layui-form-item">
           <div class="layui-input-block">
             <button class="layui-btn" id="submit" lay-submit="" lay-filter="demo1">立即提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <button type="reset" id="rest" class="layui-btn layui-btn-primary">重置</button>
           </div>
         </div>
       </form>
@@ -128,7 +128,11 @@
     var devtypename = $('#devtypeid').val().split(',')[1];
     var deptname = $('#deptname').val();
     var personinchargename = $('#personinchargename').val();
-    var devgroupname = $('#devgroupname').val();
+    //var devgroupname = $('#devgroupname').val();
+    var headman = $('#headman').val();
+    var manager = $('#manager').val();
+    var count = 0;
+    var objError = "";
     console.log(devcode);
     console.log(devname);
     console.log(cropmobility);
@@ -137,36 +141,111 @@
     console.dir(devtypename);
     console.log(deptname);
     console.log(personinchargename);
-    console.log(devgroupname);
-    $.ajax({
-      type: 'post',
-      url: 'http://10.1.8.45:8080/com/dev/add.json',
-      data: {
-        devcode: devcode,
-        devname: devname,
-        cropmobility: cropmobility,
-        companyname: companyname,
-        devtypecode: devtypecode,
-        devtypename: devtypename,
-        deptname: deptname,
-        personinchargename: personinchargename,
-        devgroupname: devgroupname,
-      },
-      success: function(data){
-        console.log(data);
-        if(data.result == 1){
-          layui.use('layer', function(){
-            var layer = layui.layer;
-            layer.alert('提交成功');
-          })
-        }else{
-          layui.use('layer', function(){
-            var layer = layui.layer;
-            layer.alert('提交失败');
-          })
+    //console.log(devgroupname);
+    console.log(headman);
+    console.log(manager);
+    if(devcode == ""){
+      objError += "设备编号不能为空<br/>";
+    }
+    if(devname == ""){
+      objError += "设备名称不能为空";
+    }
+    if(cropmobility == ""){
+      objError += "稼动率基数不能为空";
+    }
+    if(companyname == ""){
+      objError += "公司不能为空";
+    }
+    if(devtypecode == ""){
+      objError += "设备类别不能为空";
+    }
+    if(deptname == ""){
+      objError += "所在部门不能为空";
+    }
+    if(personinchargename == ""){
+      objError += "领班不能为空";
+    }
+    if(headman == ""){
+      objError += "组长不能为空";
+    }
+    if(manager == ""){
+      objError += "经理不能为空";
+    }
+    /*if(devgroupname == ""){
+      objError += "所在部门不能为空";
+    }*/
+    if(objError != ""){
+      layui.use('layer', function(){
+        var layer = layui.layer;
+        layer.alert(objError);
+      })
+      return false;
+    }
+    if(count == 0){
+      $.ajax({
+        type: 'post',
+        url: 'http://10.1.8.45:8080/com/dev/add.json',
+        data: {
+          devcode: devcode,
+          devname: devname,
+          cropmobility: cropmobility,
+          companyname: companyname,
+          devtypecode: devtypecode,
+          devtypename: devtypename,
+          deptname: deptname,
+          personinchargename: personinchargename,
+          devgroupname: "",
+          headman: headman,
+          manager: manager,
+        },
+        success: function(data){
+          console.log(data);
+          if(data.result == 1){
+            layui.use('layer', function(){
+              var layer = layui.layer;
+              layer.alert('提交成功');
+            })
+          }else{
+            layui.use('layer', function(){
+              var layer = layui.layer;
+              layer.alert('提交失败');
+            })
+          }
         }
-      }
-    })
+      })
+    }else{
+      $.ajax({
+        type: 'post',
+        url: 'http://10.1.8.45:8080/com/dev/update.json',
+        data: {
+          devcode: devcode,
+          devname: devname,
+          cropmobility: cropmobility,
+          companyname: companyname,
+          devtypecode: devtypecode,
+          devtypename: devtypename,
+          deptname: deptname,
+          personinchargename: personinchargename,
+          devgroupname: devgroupname,
+          headman: headman,
+          manager: manager,
+        },
+        success: function(data){
+          console.log(data);
+          if(data.result == 1){
+            layui.use('layer', function(){
+              var layer = layui.layer;
+              layer.alert('提交成功');
+            })
+          }else{
+            layui.use('layer', function(){
+              var layer = layui.layer;
+              layer.alert('提交失败');
+            })
+          }
+        }
+      })
+    }
     return false;
   })
   $.ajax({
@@ -183,7 +262,7 @@
         var object = new Object();
         var a = document.createElement('a');
         a.href = 'javascript:void(0)';
-        a.innerHTML = data.listData[i].devtypename;
+        a.innerHTML = data.listData[i].devname;
         li.appendChild(a);
         layuiNav.appendChild(li);
       }
@@ -195,25 +274,32 @@
       var deptname = $('#deptname');
       var personinchargename = $('#personinchargename');
       var devgroupname = $('#devgroupname');
+      var headman = $('#headman');
+      var manager = $('#manager');
       for(var i = 0; i < document.getElementsByClassName('list_li').length; i++){
         (function(q){
           document.getElementsByClassName('list_li')[q].onclick = function(){
+            count = 1;
             var that = JSON.parse(this.dataset.value);
             devcode.val(that.devcode);
             devname.val(that.devname);
             cropmobility.val(that.crop_mobility_radix);
-            companyname.val(that.companyname.split(',')[0]);
-            console.log(that.companyname);
+            companyname.val(that.companyname);
             companyname.next('.layui-form-select').children('.layui-select-title').children('.layui-input').val(that.companyname.split(',')[1]);
             devtypecode.val(that.devtypeid+','+that.devtypename);
             devtypecode.next('.layui-form-select').children('.layui-select-title').children('.layui-input').val(that.devtypename);
             deptname.val(that.deptname);
             personinchargename.val(that.personinchargename);
             devgroupname.val(that.devgroupname);
+            headman.val(that.headman);
+            manager.val(that.manager);
           }
         })(i)
       }
     }
+  })
+  $('#rest').click(function(){
+    count = 0;
   })
 </script>
 <script src="layui/layui.js"></script>

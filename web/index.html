@@ -32,33 +32,40 @@
 	<div class="ranking_home" id="ranking_home">
 		<div class="ranking_home_body" v-for="(product,index) in products">
 			<div class="ranking_home_head">
-				<div class="ranking_home_head_div" style="width: 12%; height: 100%;">序号</div>
-				<div class="ranking_home_head_div" style="width: 25%; height: 100%;">设备编号</div>
-				<div class="ranking_home_head_div" style="width: 21%; height: 100%;">领班</div>
-				<div class="ranking_home_head_div" style="width: 21%; height: 100%;">组长</div>
-				<div class="ranking_home_head_div" style="width: 21%; height: 100%;">经理</div>
-				<div class="clear"></div>
+				<div class="ranking_home_head_div">序号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{index+1}}</div>
+				<div class="ranking_home_head_div"></div>
+				<div class="ranking_home_head_div" style="width: 50%;">设备编号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{product.name}}</div>
 			</div>
-			<div class="ranking_home_body_item">
-				<div class="ranking_home_body_item_div" style="width: 12%; height: 100%;">{{index+1}}</div>
-				<div class="ranking_home_body_item_div" style="width: 25%; height: 100%;">{{product.name}}</div>
+			<!-- <div class="ranking_home_body_item">
 				<div class="ranking_home_body_item_div" style="width: 21%; height: 100%;">{{product.foreman}}</div>
 				<div class="ranking_home_body_item_div" style="width: 21%; height: 100%;">{{product.leader}}</div>
 				<div class="ranking_home_body_item_div" style="width: 21%; height: 100%;">{{product.manager}}</div>
-			</div>
+			</div> -->
 			<div class="ranking_home_body_item_context">
-				<table>
+				<div class="ranking_home_body_item_context_radiu">
+					<div class="ranking_home_body_item_context_radiu_item">
+						<div style="background-color: #2695b2;"><p>稼动率</p>{{product.text}}</div>
+					</div>
+					<div class="ranking_home_body_item_context_radiu_item">
+						<div style="background-color: #e15356;"><p>总做功</p>{{product.total}}</div>
+					</div>
+					<div class="ranking_home_body_item_context_radiu_item">
+						<div style="background-color: #46a43e;"><p>标准</p>{{product.nomal}}</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<!-- <table>
 					<tr>
-						<td style="background-color: red;">稼动率</td>
-						<td style="background-color: orange;">总做功</td>
-						<td style="background-color: green;">标准</td>
+						<td style="background-color: #2695b2;">稼动率</td>
+						<td style="background-color: #e15356;">总做功</td>
+						<td style="background-color: #46a43e;">标准</td>
 					</tr>
 					<tr>
-						<td style="background-color: red;">{{product.text}}</td>
-						<td style="background-color: orange;">{{product.total}}</td>
-						<td style="background-color: green;">{{product.nomal}}</td>
+						<td style="background-color: #2695b2;">{{product.text}}</td>
+						<td style="background-color: #e15356;">{{product.total}}</td>
+						<td style="background-color: #46a43e;">{{product.nomal}}</td>
 					</tr>
-				</table>
+				</table> -->
 				<table frame="void">
 					<tr>
 						<td>时间段</td>

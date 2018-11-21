@@ -52,7 +52,7 @@
         <div class="layui-form-item">
           <div class="layui-input-block">
             <button class="layui-btn" id="submit">立即提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <button type="reset" id="rest" class="layui-btn layui-btn-primary">重置</button>
           </div>
         </div>
       </form>
@@ -61,33 +61,73 @@
 </div>
 <script src="layui/layui.js"></script>
 <script>
+  var count = 0;
   $('#submit').click(function(){
     var number = $('#number').val();
     var name = $('#name').val();
+    var objError = "";
     console.log(number);
     console.log(name);
-    $.ajax({
-      type: 'post',
-      url: 'http://10.1.8.45:8080/com/cli/type/add.json',
-      data: {
-        devtypecode: number,
-        devtypename: name,
-      },
-      success: function(data){
-        console.log(data);
-        if(data.result == 1){
-          layui.use('layer', function(){
-            var layer = layui.layer;
-            layer.alert('提交成功');
-          })
-        }else{
-          layui.use('layer', function(){
-            var layer = layui.layer;
-            layer.alert('提交失败');
-          })
+    if(number == ""){
+      objError += "类别编号不能为空<br/>";
+    }
+    if(name == ""){
+      objError += "类别名称不能为空";
+    }
+    if(objError != ""){
+      layui.use('layer', function(){
+        var layer = layui.layer;
+        layer.alert(objError);
+      })
+      return false;
+    }
+    if(count == 0){
+      $.ajax({
+        type: 'post',
+        url: 'http://10.1.8.45:8080/com/cli/type/add.json',
+        data: {
+          devtypecode: number,
+          devtypename: name,
+        },
+        success: function(data){
+          console.log(data);
+          if(data.result == 1){
+            layui.use('layer', function(){
+              var layer = layui.layer;
+              layer.alert('提交成功');
+            })
+          }else{
+            layui.use('layer', function(){
+              var layer = layui.layer;
+              layer.alert('提交失败');
+            })
+          }
         }
-      }
-    })
+      })
+    }else{
+      $.ajax({
+        type: 'post',
+        url: 'http://10.1.8.45:8080/com/cli/type/update.json',
+        data: {
+          devtypecode: number,
+          devtypename: name,
+        },
+        success: function(data){
+          console.log(data);
+          if(data.result == 1){
+            layui.use('layer', function(){
+              var layer = layui.layer;
+              layer.alert('提交成功');
+            })
+          }else{
+            layui.use('layer', function(){
+              var layer = layui.layer;
+              layer.alert('提交失败');
+            })
+          }
+        }
+      })
+    }
     return false;
   })
   $.ajax({
@@ -113,12 +153,16 @@
       for(var i = 0; i < document.getElementsByClassName('list_li').length; i++){
         (function(q){
           document.getElementsByClassName('list_li')[q].onclick = function(){
+            count = 1;
             number.val(this.dataset.value);
             name.val(this.children[0].innerHTML);
           }
         })(i)
       }
     }
+  })
+  $('#rest').click(function(){
+          count = 0;
   })
 //JavaScript代码区域
 </script>
