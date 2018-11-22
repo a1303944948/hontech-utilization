@@ -7,6 +7,34 @@
   <link rel="stylesheet" href="layui/css/layui.css"/>
   <script type="text/javascript" src="jquery-3.3.1.js"></script>
 </head>
+<style type="text/css">
+  .layui-form-clone_div{
+    display: inline-block; 
+    line-height: 38px; 
+    margin-right: 10px;
+  }
+  .layui-form-clone_div_item{
+    display: inline-block; 
+    width: 20px; 
+    height: 20px; 
+    line-height: 20px; 
+    border-radius: 4px; 
+    text-align: center; 
+    font-size: 14px; 
+    font-family: serif; 
+    font-weight: 600; 
+    border: 1px #e5e5e5 solid; 
+    background-color: #ffffff; 
+    color: #ffffff; 
+    margin-left: 5px; 
+    margin-right: 5px; 
+    user-select: none; 
+    cursor: pointer; 
+    position: relative; 
+    top: 6px; 
+    transition: 1s;
+  }
+</style>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
   <div class="layui-header">
@@ -40,26 +68,26 @@
     <div id="layui-form-block" style="padding: 15px;">
       <h3 style="margin-bottom: 10px;">工作时间：</h3>
       <form class="layui-form-clone layui-form layui-form-pane" style="display: none">
-        <div style="display: inline-block; line-height: 38px; margin-right: 10px;">
-          <span style="display: inline-block; width: 20px; height: 20px; line-height: 20px; border-radius: 4px; text-align: center; font-size: 14px; font-family: serif; font-weight: 600; border: 1px #e5e5e5 solid; background-color: #ffffff; color: #ffffff; margin-left: 5px; margin-right: 5px; user-select: none; cursor: pointer; position: relative; top: 6px; transition: 1s;" onclick=";if(this.innerHTML==''){this.style.border='1px #1B920C solid';this.style.backgroundColor='#20AA0E';this.innerHTML='√';}else{this.style.border='1px #e5e5e5 solid';this.style.backgroundColor='#ffffff';this.innerHTML='';}"></span>
+        <div class="layui-form-clone_div">
+          <span class="layui-form-clone_div_item" onclick="if(this.innerHTML==''){this.style.border='1px #1B920C solid';this.style.backgroundColor='#20AA0E';this.innerHTML='√';}else{this.style.border='1px #e5e5e5 solid';this.style.backgroundColor='#ffffff';this.innerHTML='';}"></span>
           <span>次日</span>
         </div>
         <div class="layui-form-item" style="width: 260px !important; display: inline-block;">
           <label class="layui-form-label">开始时间</label>
           <div class="layui-input-block">
-            <input type="text" id="conversion" lay-verify="title" autocomplete="off" placeholder="请输入开始时间" class="layui-input">
+            <input type="text" lay-verify="title" autocomplete="off" placeholder="请输入开始时间" class="layui-input start_time">
           </div>
         </div>
         <div class="layui-form-item" style="width: 260px !important; display: inline-block;">
           <label class="layui-form-label">结束时间</label>
           <div class="layui-input-block">
-            <input type="text" id="widening" lay-verify="title" autocomplete="off" placeholder="请输入结束时间" class="layui-input">
+            <input type="text" lay-verify="title" autocomplete="off" placeholder="请输入结束时间" class="layui-input end_time">
           </div>
         </div>
         <div class="layui-form-item" style="width: 260px !important; display: inline-block;">
           <label class="layui-form-label">时间段</label>
           <div class="layui-input-block">
-            <input type="text" id="widening" lay-verify="title" autocomplete="off" placeholder="请输入时间段名称" class="layui-input">
+            <input type="text" lay-verify="title" autocomplete="off" placeholder="请输入时间段名称" class="layui-input time_period">
           </div>
         </div>
         <button class="layui-btn layui-btn-primary delete" type="button" style="margin-left: 15px;">删除</button>
@@ -77,13 +105,23 @@
   var Delete = document.getElementsByClassName('delete');
   Creat.click(function(){
     Block.append($('.layui-form-clone:eq(0)').clone().css('display','block'));
-    console.log(Delete.length);
     for(var i = 0; i < Delete.length; i++){
       (function(q){
         Delete[q].onclick = function(){
           this.parentNode.parentNode.removeChild(this.parentNode);
         }
       })(i)
+    }
+  })
+  var layuiFormClone= document.getElementsByClassName('layui-form-clone');
+  var Submit = $('#submit');
+  var layuiFormCloneDivItem = document.getElementsByClassName('layui-form-clone_div_item'); //次日
+  var startTime = document.getElementsByClassName('start_time');                            //开始时间
+  var endTime = document.getElementsByClassName('end_time');                                //结束时间
+  var timePeriod = document.getElementsByClassName('time_period');                          //时间段
+  Submit.click(function(){
+    for(var i = 1; i < layuiFormClone.length; i++){
+      console.log(i);
     }
   })
 </script>

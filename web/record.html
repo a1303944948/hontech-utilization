@@ -16,25 +16,31 @@
 <body>
 	<header id="record_header">
 		<select>
-			<option value="">设备选择...</option>
-			<option value="dg">折床001</option>
-			<option value="dg">折床002</option>
-			<option value="dg">折床003</option>
-			<option value="dg">焊接机械臂001</option>
+			<option value="">公司...</option>
+			<option value="zjjf">浙江</option>
+			<option value="dgjf">东莞</option>
 		</select>
-		<input  class="record_header_int" type="date"/>
+		<select>
+			<option value="">设备类型...</option>
+			<option value="zc">折床</option>
+			<option value="cc">冲压</option>
+			<option value="jqhj">机器焊接</option>
+			<option value="sghj">手工焊接</option>
+		</select>
 	</header>
 	<div class="record_home" id="record_home">
 		<table frame="void">
 			<tr>
-				<td>设备</td>
-				<td>时间</td>
-				<td>次数/S</td>
+				<td>设备编号</td>
+				<td>设备名称</td>
+				<td>今日总计</td>
+				<td>标准</td>
 			</tr>
 			<tr v-for="product in products">
-				<td>{{product.name}}</td>
-				<td>{{product.dateTime}}</td>
+				<td>{{product.machId}}</td>
+				<td>{{product.machName}}</td>
 				<td>{{product.total}}</td>
+				<td>{{product.normal}}</td>
 			</tr>
 		</table>
 		<div class="footer"></div>

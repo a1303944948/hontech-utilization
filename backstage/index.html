@@ -39,7 +39,28 @@
   <div class="layui-side layui-bg-black">
     <div class="layui-side-scroll">
       <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-      <ul class="layui-nav layui-nav-tree" id="layui-nav" lay-filter="test"></ul>
+       <!-- <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+        <li class="layui-nav-item layui-nav-itemed">
+          <a class="" href="javascript:;">所有商品</a>
+          <dl class="layui-nav-child">
+            <dd><a href="javascript:;">列表一</a></dd>
+            <dd><a href="javascript:;">列表二</a></dd>
+            <dd><a href="javascript:;">列表三</a></dd>
+            <dd><a href="">超链接</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">解决方案</a>
+          <dl class="layui-nav-child">
+            <dd><a href="javascript:;">列表一</a></dd>
+            <dd><a href="javascript:;">列表二</a></dd>
+            <dd><a href="">超链接</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item"><a href="">云市场</a></li>
+        <li class="layui-nav-item"><a href="">发布商品</a></li>
+      </ul>
+ -->      <ul class="layui-nav layui-nav-tree" id="layui-nav" lay-filter="test"></ul>
     </div>
   </div>
   <div class="layui-body">
@@ -256,6 +277,7 @@
               var layer = layui.layer;
               layer.alert('提交成功');
             })
+            document.URL=location.href;
           }else{
             layui.use('layer', function(){
               var layer = layui.layer;
@@ -291,6 +313,7 @@
               var layer = layui.layer;
               layer.alert('提交成功');
             })
+            document.URL=location.href;
           }else{
             layui.use('layer', function(){
               var layer = layui.layer;
@@ -302,24 +325,60 @@
     }
     return false;
   })
+  var layuiNav = $('#layui-nav')[0];
+  $.ajax({
+    type: 'post',
+    url: 'http://10.1.8.45:8080/com/cli/type/select.json',
+    data: {},
+    async: false,
+    success: function(data){
+      console.log(data);
+      for(var i = 0; i < data.listData.length; i++){
+        var li = document.createElement('li');
+        li.className = 'layui-nav-item layui-nav-itemed list_li';
+        li.setAttribute('data-value',data.listData[i].devtypeid);
+        var a = document.createElement('a');
+        a.href = 'javascript:void(0)';
+        a.innerHTML = data.listData[i].devtypename;
+        li.appendChild(a);
+        layuiNav.appendChild(li);
+      }
+    }
+  })
   $.ajax({
     type: 'post',
     url: 'http://10.1.8.45:8080/com/dev/select.json',
     data: {},
     success: function(data){
-      console.log(data);
-      var layuiNav = $('#layui-nav')[0];
-      for(var i = 0; i < data.listData.length; i++){
-        var li = document.createElement('li');
-        li.className = 'layui-nav-item layui-nav-itemed list_li';
-        li.setAttribute('data-value',JSON.stringify(data.listData[i]));
-        var object = new Object();
-        var a = document.createElement('a');
+      /*<dl class="layui-nav-child">
+        <dd><a href="javascript:;">列表一</a></dd>
+        <dd><a href="javascript:;">列表二</a></dd>
+        <dd><a href="javascript:;">列表三</a></dd>
+        <dd><a href="">超链接</a></dd>
+      </dl>*/
+      //for(var i = 0; i < data.listData.length; i++){
+        var li = document.getElementsByClassName('list_li');
+        //li.setAttribute('data-value',JSON.stringify(data.listData[i]));
+        for(var i = 0; i < li.length; i++){
+          var dl = document.createElement('dl');
+          dl.className = 'layui-nav-child';
+          for(var j = 0; j < data.listData.length; j++){
+            if(li[i].dataset.value == data.listData.devtypeid){
+              var dd = document.createElement('dd');
+              var a = document.createElement('a');
+              a.href = "javascript:void(0)";
+              a.innerHTML = data.listData.devname;
+              dd.appendChild(a);
+              dl.appendChild(dd);
+            }
+          }
+          li[i].appendChild(dl);
+        }
+        /*var a = document.createElement('a');
         a.href = 'javascript:void(0)';
         a.innerHTML = data.listData[i].devname;
-        li.appendChild(a);
-        layuiNav.appendChild(li);
-      }
+        li.appendChild(a);*/
+      //}
       var devcode = $('#devcode');
       var devname = $('#devname');
       var cropmobility = $('#cropmobility');

@@ -28,12 +28,12 @@
 			<option value="sghj">手工焊接</option>
 		</select>
 		<select>
-			<option value="">今天</option>
-			<option value="">昨天</option>
-			<option value="">本周</option>
-			<option value="">上周</option>
-			<option value="">本月</option>
-			<option value="">上月</option>
+			<option value="昨天">昨天</option>
+			<option value="本周">最近七天</option>
+			<option value="上周">上周</option>
+			<option value="本月">最近三十天</option>
+			<option value="上月">上月</option>
+			<option value="上月">最近九十天</option>
 		</select>
 		<button class="ranking_header_search">查询</button>
 	</header>
@@ -46,6 +46,7 @@
 					<div class="ranking_home_body_list_left_center" v-if="product.typeId=='Punching'" style="background-color: #F39518; font-size: 1.8rem; line-height: 3.7rem;">{{product.typeName}}</div>
 					<div class="ranking_home_body_list_left_center" v-if="product.typeId=='welding-robot'" style="background-color: #33A638; font-size: 1.4rem; line-height: 1.9rem;">{{product.typeName}}</div>
 					<div class="ranking_home_body_list_left_center" v-if="product.typeId=='welding'" style="background-color: #E9504E; font-size: 1.4rem; line-height: 1.9rem;">{{product.typeName}}</div>
+					<div class="ranking_home_body_list_left_center" v-if="product.typeId=='spot-welder'" style="background-color: #942CAE; font-size: 1.8rem; line-height: 3.7rem;">{{product.typeName}}</div>
 					<div class="ranking_home_body_list_left_right">{{product.name}}</div>
 					<div class="clear"></div>
 				</div>
