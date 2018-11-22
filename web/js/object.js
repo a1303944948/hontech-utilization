@@ -30,10 +30,15 @@ var viewObj = [
 ]
 
 var rankObj = [
-	{name: '折弯001',owner: 'zjjf',ownerText: '浙江嘉丰',text: '90%',typeId: 'Bending',typeName: '折弯'},
-	{name: '机器焊接002',owner: 'zjjf',ownerText: '浙江嘉丰',text: '90%',typeId: 'Punching',typeName: '冲压'},
-	{name: '手工焊接003',owner: 'dgjf',ownerText: '东莞嘉丰',text: '90%',typeId: 'welding-robot',typeName: '机器焊接'},
-	{name: '冲压004',owner: 'dgjf',ownerText: '东莞嘉丰',text: '90%',typeId: 'welding',typeName: '手工焊接'},
+	{name: '折弯001',owner: 'zjjf',ownerText: '浙江嘉丰',text: '90%',normal: '80%',typeId: 'Bending',typeName: '折弯'},
+	{name: '冲压004',owner: 'zjjf',ownerText: '浙江嘉丰',text: '89%',normal: '80%',typeId: 'Punching',typeName: '冲压'},
+	{name: '手工焊接003',owner: 'dgjf',ownerText: '东莞嘉丰',text: '79%',normal: '80%',typeId: 'welding-robot',typeName: '机器焊接'},
+	{name: '机器焊接002',owner: 'dgjf',ownerText: '东莞嘉丰',text: '78%',normal: '80%',typeId: 'welding',typeName: '手工焊接'},
+	{name: '折弯0015',owner: 'zjjf',ownerText: '浙江嘉丰',text: '78%',normal: '80%',typeId: 'Bending',typeName: '折弯'},
+	{name: '折弯0016',owner: 'dgjf',ownerText: '东莞嘉丰',text: '76%',normal: '70%',typeId: 'Bending',typeName: '折弯'},
+	{name: '折弯0017',owner: 'zjjf',ownerText: '浙江嘉丰',text: '70%',normal: '70%',typeId: 'Bending',typeName: '折弯'},
+	{name: '折弯0018',owner: 'dgjf',ownerText: '东莞嘉丰',text: '66%',normal: '70%',typeId: 'Bending',typeName: '折弯'},
+	{name: '折弯0019',owner: 'dgjf',ownerText: '东莞嘉丰',text: '50%',normal: '80%',typeId: 'Bending',typeName: '折弯'},
 ]
 
 var recordObj = [

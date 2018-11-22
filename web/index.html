@@ -21,7 +21,7 @@
 			<option value="dgjf">东莞</option>
 		</select>
 		<select>
-			<option value="">设备选择...</option>
+			<option value="">设备类型...</option>
 			<option value="zc">折床</option>
 			<option value="cc">冲压</option>
 			<option value="jqhj">机器焊接</option>
@@ -34,20 +34,24 @@
 			<option value="">上周</option>
 			<option value="">本月</option>
 			<option value="">上月</option>
-			<option value="">自定义</option>
 		</select>
+		<button class="ranking_header_search">查询</button>
 	</header>
 	<div class="ranking_home" id="ranking_home">
 		<div class="ranking_home_body" v-for="(product,index) in products">
 			<div class="ranking_home_body_list">
 				<div class="ranking_home_body_list_left">
-					<div class="ranking_home_body_list_left_left">{{index}}</div>
-					<div class="ranking_home_body_list_left_center"></div>
-					<div class="ranking_home_body_list_left_right"></div>
+					<div class="ranking_home_body_list_left_left">{{index+1}}</div>
+					<div class="ranking_home_body_list_left_center" v-if="product.typeId=='Bending'" style="background-color: #3E77B4; font-size: 1.8rem; line-height: 3.7rem;">{{product.typeName}}</div>
+					<div class="ranking_home_body_list_left_center" v-if="product.typeId=='Punching'" style="background-color: #F39518; font-size: 1.8rem; line-height: 3.7rem;">{{product.typeName}}</div>
+					<div class="ranking_home_body_list_left_center" v-if="product.typeId=='welding-robot'" style="background-color: #33A638; font-size: 1.4rem; line-height: 1.9rem;">{{product.typeName}}</div>
+					<div class="ranking_home_body_list_left_center" v-if="product.typeId=='welding'" style="background-color: #E9504E; font-size: 1.4rem; line-height: 1.9rem;">{{product.typeName}}</div>
+					<div class="ranking_home_body_list_left_right">{{product.name}}</div>
 					<div class="clear"></div>
 				</div>
 				<div class="ranking_home_body_list_right">
-					<div class="ranking_home_body_list_right_left">{{product.text}}</div>
+					<div class="ranking_home_body_list_right_left" v-if="parseInt(product.normal) < parseInt(product.text)" style="color: #33A638">{{product.text}}</div>
+					<div class="ranking_home_body_list_right_left" v-else style="color: #E9504E">{{product.text}}</div>
 					<div class="ranking_home_body_list_right_right"><span v-if="product.owner == 'zjjf'" style="background-color: #F39518">{{product.ownerText.substr(0, 2)}}</span><span v-if="product.owner == 'dgjf'" style="background-color: #3E77B4">{{product.ownerText.substr(0, 2)}}</span></div>
 					<div class="clear"></div>
 				</div>
