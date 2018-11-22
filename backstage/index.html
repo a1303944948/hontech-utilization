@@ -7,6 +7,16 @@
   <link rel="stylesheet" href="layui/css/layui.css" media="all"/>
   <script type="text/javascript" src="jquery-3.3.1.js"></script>
 </head>
+<style type="text/css">
+  /*在谷歌下移除input[number]的上下箭头*/
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button{
+      -webkit-appearance: none !important;
+      margin: 0;
+  }
+  /*在firefox下移除input[number]的上下箭头*/
+  input[type="number"]{-moz-appearance:textfield;}
+</style>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
   <div class="layui-header">
@@ -20,7 +30,7 @@
     <ul class="layui-nav layui-layout-right">
       <li class="layui-nav-item">
         <a href="javascript:;">
-          贤心
+          用户
         </a>
       </li>
       <li class="layui-nav-item"><a href="">退出</a></li>
@@ -36,37 +46,37 @@
     <!-- 内容主体区域 -->
     <div style="padding: 15px; padding-top: 30px;">
       <form class="layui-form layui-form-pane">
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="width: 500px;">
           <label class="layui-form-label">设备编号</label>
           <div class="layui-input-block">
             <input type="text" id="devcode" lay-verify="title" autocomplete="off" placeholder="请输入设备编号" class="layui-input">
           </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="width: 500px;">
           <label class="layui-form-label">设备名称</label>
           <div class="layui-input-block">
             <input type="text" id="devname" lay-verify="title" autocomplete="off" placeholder="请输入设备名称" class="layui-input">
           </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="width: 500px;">
           <label class="layui-form-label">稼动率标准</label>
           <div class="layui-input-block">
             <input type="text" id="cropmobility" lay-verify="title" autocomplete="off" placeholder="请输入稼动率基数" class="layui-input">
           </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="width: 500px;">
           <label class="layui-form-label">换算比例</label>
           <div class="layui-input-block">
             <input type="number" id="conversion" lay-verify="title" autocomplete="off" placeholder="请输入换算比例" class="layui-input">
           </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="width: 500px;">
           <label class="layui-form-label">宽放系数</label>
           <div class="layui-input-block">
             <input type="number" id="widening" lay-verify="title" autocomplete="off" placeholder="请输入宽放系数" class="layui-input">
           </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="width: 500px;">
           <div class="layui-inline">
             <label class="layui-form-label">选择公司</label>
             <div class="layui-input-inline">
@@ -78,19 +88,17 @@
             </div>
           </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="width: 500px;">
           <div class="layui-inline">
             <label class="layui-form-label">设备类别</label>
             <div class="layui-input-inline">
               <select id="devtypeid" lay-verify="required" lay-search="">
                 <option value="">请选择设备类别</option>
-                <option value="zhechuang,折床">折床</option>
-                <option value="jixiebi,机械臂">机械臂</option>
               </select>
             </div>
           </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="width: 500px;">
           <label class="layui-form-label">所在部门</label>
           <div class="layui-input-block">
             <input type="text" id="deptname" lay-verify="title" autocomplete="off" placeholder="请输入所在部门" class="layui-input">
@@ -102,13 +110,13 @@
             <input type="text" id="personinchargename" lay-verify="title" autocomplete="off" placeholder="请输入负责人" class="layui-input">
           </div>
         </div> -->
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="width: 500px;">
           <label class="layui-form-label">组长</label>
           <div class="layui-input-block">
             <input type="text" id="headman" lay-verify="title" autocomplete="off" placeholder="请输入组长" class="layui-input">
           </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="width: 500px;">
           <label class="layui-form-label">经理</label>
           <div class="layui-input-block">
             <input type="text" id="manager" lay-verify="title" autocomplete="off" placeholder="请输入经理" class="layui-input">
@@ -120,7 +128,7 @@
             <input type="text" id="devgroupname" lay-verify="title" autocomplete="off" placeholder="请输入设备组" class="layui-input">
           </div>
         </div> -->
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="width: 500px;">
           <div class="layui-input-block">
             <button class="layui-btn" id="submit" lay-submit="" type="button" lay-filter="demo1">立即提交</button>
             <button type="reset" id="rest" class="layui-btn layui-btn-primary">重置</button>
@@ -131,6 +139,22 @@
   </div>
 </div>
 <script type="text/javascript">
+  //设备类别下拉框渲染
+  var Devtypeid = document.getElementById('devtypeid');
+  $.ajax({
+    type: 'post',
+    url: 'http://10.1.8.45:8080/com/cli/type/select.json',
+    data: {},
+    success: function(data){
+      for(var i = 0; i < data.listData.length; i++){
+        var option = document.createElement('option');
+        option.innerHTML = data.listData[i].devtypename;
+        option.value = data.listData[i].devtypeid + ',' + data.listData[i].devtypename;
+        Devtypeid.appendChild(option);
+      }
+    }
+  });
+
   var count = 0;
   $('#submit').on('click',function(){
     var devcode = $('#devcode').val();

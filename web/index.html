@@ -17,15 +17,15 @@
 	<header id="ranking_header">
 		<select>
 			<option value="">公司</option>
-			<option value="zj">浙江</option>
-			<option value="dg">东莞</option>
+			<option value="zjjf">浙江</option>
+			<option value="dgjf">东莞</option>
 		</select>
 		<select>
 			<option value="">设备选择...</option>
-			<option value="dg">35吨折床</option>
-			<option value="dg">50吨折床</option>
-			<option value="dg">75吨折床</option>
-			<option value="dg">焊接机械臂</option>
+			<option value="zc">折床</option>
+			<option value="cc">冲压</option>
+			<option value="jqhj">机器焊接</option>
+			<option value="sghj">手工焊接</option>
 		</select>
 		<select>
 			<option value="">今天</option>
@@ -39,18 +39,32 @@
 	</header>
 	<div class="ranking_home" id="ranking_home">
 		<div class="ranking_home_body" v-for="(product,index) in products">
-			<div class="ranking_home_head">
+			<div class="ranking_home_body_list">
+				<div class="ranking_home_body_list_left">
+					<div class="ranking_home_body_list_left_left">{{index}}</div>
+					<div class="ranking_home_body_list_left_center"></div>
+					<div class="ranking_home_body_list_left_right"></div>
+					<div class="clear"></div>
+				</div>
+				<div class="ranking_home_body_list_right">
+					<div class="ranking_home_body_list_right_left">{{product.text}}</div>
+					<div class="ranking_home_body_list_right_right"><span v-if="product.owner == 'zjjf'" style="background-color: #F39518">{{product.ownerText.substr(0, 2)}}</span><span v-if="product.owner == 'dgjf'" style="background-color: #3E77B4">{{product.ownerText.substr(0, 2)}}</span></div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<!-- <div class="ranking_home_head">
 				<div class="ranking_home_head_div">序号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{index+1}}</div>
 				<div class="ranking_home_head_div"></div>
 				<div class="ranking_home_head_div" style="width: 50%;">设备编号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{product.name}}</div>
-			</div>
+			</div> -->
 			<!-- <div class="ranking_home_body_item">
 				<div class="ranking_home_body_item_div" style="width: 21%; height: 100%;">{{product.foreman}}</div>
 				<div class="ranking_home_body_item_div" style="width: 21%; height: 100%;">{{product.leader}}</div>
 				<div class="ranking_home_body_item_div" style="width: 21%; height: 100%;">{{product.manager}}</div>
 			</div> -->
-			<div class="ranking_home_body_item_context">
-				<div class="ranking_home_body_item_context_radiu">
+			<!-- <div class="ranking_home_body_item_context"> -->
+				<!-- <div class="ranking_home_body_item_context_radiu">
 					<div class="ranking_home_body_item_context_radiu_item">
 						<div style="background-color: #2695b2;"><p>稼动率</p>{{product.text}}</div>
 					</div>
@@ -61,7 +75,7 @@
 						<div style="background-color: #46a43e;"><p>标准</p>{{product.nomal}}</div>
 					</div>
 					<div class="clear"></div>
-				</div>
+				</div> -->
 				<!-- <table>
 					<tr>
 						<td style="background-color: #2695b2;">稼动率</td>
@@ -74,7 +88,7 @@
 						<td style="background-color: #46a43e;">{{product.nomal}}</td>
 					</tr>
 				</table> -->
-				<table frame="void">
+				<!-- <table frame="void">
 					<tr>
 						<td>时间段</td>
 						<td>首次做功</td>
@@ -99,8 +113,8 @@
 						<td>{{product.nightEnd}}</td>
 						<td>{{product.nightTotal}}</td>
 					</tr>
-				</table>
-			</div>
+				</table> -->
+			<!-- </div> -->
 		</div>
 		<div class="footer"></div>
 	</div>
