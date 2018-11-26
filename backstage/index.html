@@ -14,6 +14,23 @@
       -webkit-appearance: none !important;
       margin: 0;
   }
+  .layui-nav-item{
+    position: relative;
+  }
+  .list_li>a:after{
+    content: "";
+    position: absolute;
+    top: 17px;
+    left: 10px;
+    border-bottom: 5px rgba(0,0,0,0) solid;
+    border-left: 5px #e5e5e5 solid;
+    border-right: none;
+    border-top: 5px rgba(0,0,0,0) solid;
+    transition: 0.3s;
+  }
+  .layui-nav-itemed>a:after{
+    transform: rotate(90deg);
+  }
   /*在firefox下移除input[number]的上下箭头*/
   input[type="number"]{-moz-appearance:textfield;}
 </style>
@@ -102,7 +119,6 @@
             <label class="layui-form-label">选择公司</label>
             <div class="layui-input-inline">
               <select id="companyname" lay-verify="required" lay-search="">
-                <option value="">请选择公司</option>
                 <option value="zjjf,浙江嘉丰">浙江嘉丰</option>
                 <option value="dgjf,东莞嘉丰">东莞嘉丰</option>
               </select>
@@ -114,7 +130,6 @@
             <label class="layui-form-label">设备类别</label>
             <div class="layui-input-inline">
               <select id="devtypeid" lay-verify="required" lay-search="">
-                <option value="">请选择设备类别</option>
               </select>
             </div>
           </div>
@@ -273,11 +288,8 @@
         success: function(data){
           console.log(data);
           if(data.result == 1){
-            layui.use('layer', function(){
-              var layer = layui.layer;
-              layer.alert('提交成功');
-            })
-            document.URL=location.href;
+            alert('提交成功');
+            window.location.href = window.location.href;
           }else{
             layui.use('layer', function(){
               var layer = layui.layer;
@@ -309,11 +321,8 @@
         success: function(data){
           console.log(data);
           if(data.result == 1){
-            layui.use('layer', function(){
-              var layer = layui.layer;
-              layer.alert('提交成功');
-            })
-            document.URL=location.href;
+            alert('提交成功');
+            window.location.href = window.location.href;
           }else{
             layui.use('layer', function(){
               var layer = layui.layer;
@@ -335,10 +344,12 @@
       console.log(data);
       for(var i = 0; i < data.listData.length; i++){
         var li = document.createElement('li');
-        li.className = 'layui-nav-item layui-nav-itemed list_li';
+        li.className = 'layui-nav-item list_li';
         li.setAttribute('data-value',data.listData[i].devtypeid);
         var a = document.createElement('a');
         a.href = 'javascript:void(0)';
+        a.style.boxSizing = 'border-box';
+        a.style.paddingLeft = '30px';
         a.innerHTML = data.listData[i].devtypename;
         li.appendChild(a);
         layuiNav.appendChild(li);
@@ -350,6 +361,7 @@
     url: 'http://10.1.8.45:8080/com/dev/select.json',
     data: {},
     success: function(data){
+      console.log(data);
       /*<dl class="layui-nav-child">
         <dd><a href="javascript:;">列表一</a></dd>
         <dd><a href="javascript:;">列表二</a></dd>
@@ -363,16 +375,36 @@
           var dl = document.createElement('dl');
           dl.className = 'layui-nav-child';
           for(var j = 0; j < data.listData.length; j++){
-            if(li[i].dataset.value == data.listData.devtypeid){
+            if(li[i].dataset.value == data.listData[j].devtypeid){
               var dd = document.createElement('dd');
               var a = document.createElement('a');
+              dd.className = 'list_li_item';
+              dd.setAttribute('data-value',JSON.stringify(data.listData[j]));
               a.href = "javascript:void(0)";
-              a.innerHTML = data.listData.devname;
+              a.innerHTML = data.listData[j].devcode + ' - ' + data.listData[j].devname;
               dd.appendChild(a);
               dl.appendChild(dd);
             }
           }
           li[i].appendChild(dl);
+        }
+        for(var i = 0; i < li.length; i++){
+          (function(q){
+            li[q].onclick = function(){
+              var cont = 0;
+              if(this.className == 'layui-nav-item layui-nav-itemed list_li'){
+                cont = 1;
+              }
+              for(var j = 0; j < li.length; j++){
+                li[j].className = 'layui-nav-item list_li';
+              }
+              if(cont == 1){
+                this.className = 'layui-nav-item list_li';
+              }else{
+                this.className = "layui-nav-item layui-nav-itemed list_li";
+              }
+            }
+          })(i)
         }
         /*var a = document.createElement('a');
         a.href = 'javascript:void(0)';
@@ -391,9 +423,15 @@
       var devgroupname = $('#devgroupname');
       var headman = $('#headman');
       var manager = $('#manager');
-      for(var i = 0; i < document.getElementsByClassName('list_li').length; i++){
+      var listLiItem = document.getElementsByClassName('list_li_item');
+      for(var i = 0; i < listLiItem.length; i++){
         (function(q){
-          document.getElementsByClassName('list_li')[q].onclick = function(){
+          listLiItem[q].onclick = function(event){
+            event.stopPropagation();
+            for(var j = 0; j < listLiItem.length; j++){
+              listLiItem[j].className = "list_li_item";
+            }
+            this.className = 'list_li_item layui-this';
             count = 1;
             var that = JSON.parse(this.dataset.value);
             devcode.val(that.devcode);

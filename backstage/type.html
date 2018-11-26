@@ -102,10 +102,8 @@
         success: function(data){
           console.log(data);
           if(data.result == 1){
-            layui.use('layer', function(){
-              var layer = layui.layer;
-              layer.alert('提交成功');
-            })
+            alert('提交成功');
+            window.location.href = window.location.href;
           }else{
             layui.use('layer', function(){
               var layer = layui.layer;
@@ -125,10 +123,8 @@
         success: function(data){
           console.log(data);
           if(data.result == 1){
-            layui.use('layer', function(){
-              var layer = layui.layer;
-              layer.alert('提交成功');
-            })
+            alert('提交成功');
+            window.location.href = window.location.href;
           }else{
             layui.use('layer', function(){
               var layer = layui.layer;

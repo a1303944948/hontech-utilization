@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>稼动率排名</title>
+	<title>近三十天设备停用状况</title>
 	<meta charset="utf-8"/>
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -27,18 +27,10 @@
 			<option value="jqhj">机器焊接</option>
 			<option value="sghj">手工焊接</option>
 		</select>
-		<select>
-			<option value="昨天">昨天</option>
-			<option value="本周">最近七天</option>
-			<option value="上周">上周</option>
-			<option value="本月">最近三十天</option>
-			<option value="上月">上月</option>
-			<option value="上月">最近九十天</option>
-		</select>
 		<button class="ranking_header_search">查询</button>
 	</header>
 	<div class="header"></div>
-	<div class="ranking_home" id="ranking_home">
+	<div class="ranking_home" id="last_30_days">
 		<div class="ranking_home_body" v-for="(product,index) in products">
 			<div class="ranking_home_body_list" v-on:click="greet(product.machId)">
 				<div class="ranking_home_body_list_left">
@@ -52,8 +44,7 @@
 					<div class="clear"></div>
 				</div>
 				<div class="ranking_home_body_list_right">
-					<div class="ranking_home_body_list_right_left" v-if="parseInt(product.normal) < parseInt(product.text)" style="color: #33A638">{{product.text}}</div>
-					<div class="ranking_home_body_list_right_left" v-else style="color: #E9504E">{{product.text}}</div>
+					<div class="ranking_home_body_list_right_left last_30_days_home_body_list_right_left" style="color: #666666">{{product.text}}</div>
 					<div class="ranking_home_body_list_right_right">
 						<span v-if="product.owner == 'zjjf'" style="background-color: #F39518">{{product.ownerText.substr(0, 2)}}</span>
 						<span v-if="product.owner == 'dgjf'" style="background-color: #3E77B4">{{product.ownerText.substr(0, 2)}}</span>
@@ -129,9 +120,9 @@
 	</div>
 	<footer>
 		<!-- <div class="footera footers"><img src="image/zl.png"/>总览</div> -->
-		<div class="footerb footers footerss"><img src="image/pma.png"/>排名</div>
+		<div class="footerb footers"><img src="image/pm.png"/>排名</div>
 		<div class="footerc footers"><img src="image/jl.png"/>记录</div>
-		<div class="footerd footers"><img src="image/zl.png"/>设备</div>
+		<div class="footerd footers footerss"><img src="image/zla.png"/>设备</div>
 		<div class="clear"></div>
 	</footer>
 	<script type="text/javascript" src="js/index.js"></script>

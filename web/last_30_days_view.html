@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>设备详情</title>
+	<meta charset="utf-8"/>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no, email=no" />
+	<link rel="icon" type="image/x-icon" href="image/logos.jpg"/>
+	<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<script type="text/javascript" src="js/wm.js"></script>
+	<script type="text/javascript" src="js/object.js"></script>
+	<script type="text/javascript" src="js/vue.js"></script>
+</head>
+<body>
+	<div class="last_30_days_view" id="last_30_days_view">
+		<div class="last_30_days_view_head">
+			<div class="last_30_days_view_head_left">{{products.machName}}</div>
+			<div class="last_30_days_view_head_right">组长：{{products.group}} &nbsp;&nbsp;&nbsp;经理：{{products.manager}}</div>
+			<div class="clear"></div>
+		</div>	
+		<div class="last_30_days_view_body">
+			<p>近30天</p>
+			<span>总产出：{{products.total}}</span>
+			<div class="last_30_days_view_body_left">
+				停机：{{products.stop}}
+			</div>
+			<div class="last_30_days_view_body_right">
+				开机：{{products.start}}
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="last_30_days_view_foot"></div>
+	</div>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript">
+	</script>
+</body>
+</html>

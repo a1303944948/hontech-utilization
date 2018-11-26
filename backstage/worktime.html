@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
   <title>鸿丰集团稼动率系统</title>
   <link rel="stylesheet" href="layui/css/layui.css"/>
+  <script type="text/javascript" src="wm.js"></script>
   <script type="text/javascript" src="jquery-3.3.1.js"></script>
 </head>
 <style type="text/css">
@@ -58,12 +59,12 @@
     <div class="layui-side-scroll">
       <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
       <ul class="layui-nav layui-nav-tree" id="layui-nav" lay-filter="test">
-        <li class="layui-nav-item layui-nav-itemed list_li" value="zjjf"><a href="javaScript:void(0);">浙江嘉丰</a></li>
-        <li class="layui-nav-item layui-nav-itemed list_li" value="dgjf"><a href="javaScript:void(0);">东莞嘉丰</a></li>
+        <li class="layui-nav-item layui-nav-itemed list_li" data-value="zjjf"><a href="javaScript:void(0);">浙江嘉丰</a></li>
+        <li class="layui-nav-item layui-nav-itemed list_li" data-value="dgjf"><a href="javaScript:void(0);">东莞嘉丰</a></li>
       </ul>
     </div>
   </div>
-  <div class="layui-body">
+  <div class="layui-body" style="display: none;">
     <!-- 内容主体区域 -->
     <div id="layui-form-block" style="padding: 15px;">
       <h3 style="margin-bottom: 10px;">工作时间：</h3>
@@ -75,13 +76,13 @@
         <div class="layui-form-item" style="width: 260px !important; display: inline-block;">
           <label class="layui-form-label">开始时间</label>
           <div class="layui-input-block">
-            <input type="text" lay-verify="title" autocomplete="off" placeholder="请输入开始时间" class="layui-input start_time">
+            <input type="text" lay-verify="title" autocomplete="off" placeholder="输入格式为： 07:00" class="layui-input start_time">
           </div>
         </div>
         <div class="layui-form-item" style="width: 260px !important; display: inline-block;">
           <label class="layui-form-label">结束时间</label>
           <div class="layui-input-block">
-            <input type="text" lay-verify="title" autocomplete="off" placeholder="请输入结束时间" class="layui-input end_time">
+            <input type="text" lay-verify="title" autocomplete="off" placeholder="输入格式为： 07:00" class="layui-input end_time">
           </div>
         </div>
         <div class="layui-form-item" style="width: 260px !important; display: inline-block;">
@@ -103,6 +104,49 @@
   var Creat = $('#creat');
   var Block = $('#layui-form-block');
   var Delete = document.getElementsByClassName('delete');
+  var listLi = document.getElementsByClassName('list_li');
+  var layuiBody = document.getElementsByClassName('layui-body')[0];
+  var listValue = '';
+  var listName = '';
+  var layuiFormClone= document.getElementsByClassName('layui-form-clone');
+  var Submit = $('#submit');
+  var layuiFormCloneDivItem = document.getElementsByClassName('layui-form-clone_div_item'); //次日
+  var startTime = document.getElementsByClassName('start_time');                            //开始时间
+  var endTime = document.getElementsByClassName('end_time');                                //结束时间
+  var timePeriod = document.getElementsByClassName('time_period');                          //时间段
+  for(var i = 0; i < listLi.length; i++){
+    (function(q){
+      listLi[q].onclick = function(){
+        layuiBody.style.display = 'block';
+        listValue = this.dataset.value;
+        listName = this.children[0].innerHTML;
+        $.ajax({
+          type: 'post',
+          url: 'http://10.1.8.45:8080/com/wk/time/select.json',
+          data: {
+            companyid: listValue,
+          },
+          success: function(data){
+            var layuiFormClone = document.getElementsByClassName('layui-form-clone');
+            for(var i = layuiFormClone.length; i > 1; i--){
+              layuiFormClone[i-1].parentNode.removeChild(layuiFormClone[i-1]);
+            }
+            for(var i = 0; i < data.listData.length; i++){
+              Block.append($('.layui-form-clone:eq(0)').clone().css('display','block'));
+              if(data.listData[i].flag == 1){
+                layuiFormCloneDivItem[i+1].innerHTML = '√';
+                layuiFormCloneDivItem[i+1].style.border='1px #1B920C solid';
+                layuiFormCloneDivItem[i+1].style.backgroundColor='#20AA0E';
+              }
+              startTime[i+1].value = data.listData[i].starttime;
+              endTime[i+1].value = data.listData[i].endtime;
+              timePeriod[i+1].value = data.listData[i].timeslot;
+            }
+          }
+        })
+      }
+    })(i)
+  }
   Creat.click(function(){
     Block.append($('.layui-form-clone:eq(0)').clone().css('display','block'));
     for(var i = 0; i < Delete.length; i++){
@@ -113,16 +157,64 @@
       })(i)
     }
   })
-  var layuiFormClone= document.getElementsByClassName('layui-form-clone');
-  var Submit = $('#submit');
-  var layuiFormCloneDivItem = document.getElementsByClassName('layui-form-clone_div_item'); //次日
-  var startTime = document.getElementsByClassName('start_time');                            //开始时间
-  var endTime = document.getElementsByClassName('end_time');                                //结束时间
-  var timePeriod = document.getElementsByClassName('time_period');                          //时间段
+  // starttime  开始时间
+  // endtime   结束时间
+  // timeslot   时间名称
+  // companyid  公司id
+  // companyname  公司名称
+  // flag       打钩的标记
   Submit.click(function(){
+    var array = [];
+    var errorString = "";
     for(var i = 1; i < layuiFormClone.length; i++){
-      console.log(i);
+      var count = 1;
+      if(layuiFormCloneDivItem[i].innerHTML == ""){
+        count = 0;
+      }
+      var object = new Object();
+      object.starttime = startTime[i].value.replace("：",":");
+      if(startTime[i].value == ""){
+        errorString += "第"+i+"行开始时间不能为空！<br/>"
+      }
+      object.endtime = endTime[i].value.replace("：",":");
+      if(endTime[i].value == ""){
+        errorString += "第"+i+"行结束时间不能为空！<br/>"
+      }
+      object.timeslot = timePeriod[i].value;
+      if(timePeriod[i].value == ""){
+        errorString += "第"+i+"行时间段名称不能为空！<br/>"
+      }
+      object.companyid = listValue;
+      if(listValue == ""){
+        errorString += "第"+i+"行公司编号由于未知原因为空！<br/>"
+      }
+      object.companyname = listName;
+      if(listName == ""){
+        errorString += "第"+i+"行公司名称由于未知原因为空！<br/>"
+      }
+      object.flag = count;
+      array.push(object);
     }
+    if(errorString != ""){
+      alern(errorString);
+      return false;
+    }
+    console.log(JSON.stringify(array));
+    $.ajax({
+      type: 'post',
+      url: 'http://10.1.8.45:8080/com/wk/time/add.json',
+      data: {
+        obj: JSON.stringify(array),
+      },
+      success: function(data){
+        if(data.result == 1){
+          alert('保存成功');
+          window.location.href = window.location.href;
+        }else{
+          alert('保存失败');
+        }
+      }
+    })
   })
 </script>
 </body>

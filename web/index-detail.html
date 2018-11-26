@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>设备详情</title>
+	<meta charset="utf-8"/>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no, email=no" />
+	<link rel="icon" type="image/x-icon" href="image/logos.jpg"/>
+	<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<script type="text/javascript" src="js/wm.js"></script>
+	<script type="text/javascript" src="js/object.js"></script>
+	<script type="text/javascript" src="js/vue.js"></script>
+</head>
+<body>
+	<div class="index_detail_home" id="index_detail_home">
+		<div class="index_detail_body">
+			<div class="index_detail_body_head">
+				<div class="index_detail_body_head_left">{{products.machName}}</div>
+				<div class="index_detail_body_head_right">组长：{{products.group}} &nbsp;&nbsp;&nbsp;经理：{{products.manager}}</div>
+				<div class="clear"></div>
+			</div>
+			<div class="index_detail_body_content">
+				<div class="index_detail_body_content_head">第{{products.rank}}名 &nbsp;&nbsp;&nbsp;实际: {{products.total}} &nbsp;&nbsp;标准: {{products.normal}}</div>
+				<div class="index_detail_body_content_table">
+					<div class="index_detail_body_content_table_left">{{products.text}}</div>
+					<div class="index_detail_body_content_table_right">
+						<table id="index_detail_body_content_table_right_table">
+							<tr>
+								<td></td>
+								<td>实际</td>
+								<td>开始</td>
+								<td>结束</td>
+								<td>稼动率</td>
+							</tr>
+							<tr v-for="product in products.arr">
+								<td>{{product.name}}</td>
+								<td>{{product.total}}</td>
+								<td>{{product.startTime}}</td>
+								<td>{{product.endTime}}</td>
+								<td>{{product.text}}</td>
+							</tr>
+						</table>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<p>{{products.time}}</p>
+			</div>
+			<div class="index_detail_body_foot">
+				<p>最近七天：</p>
+				<div class="index_detail_body_foot_head">
+					<div class="index_detail_body_foot_head_item" v-for="product in products.lastSevenDays">
+						<p class="index_detail_body_foot_head_item_p">{{product.text}}</p>
+						<div class="index_detail_body_foot_head_item_son" v-if="product.text >= product.normal" style="background-color: green"></div>
+						<div class="index_detail_body_foot_head_item_son" v-else style="background-color: red"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="index_detail_body_foot_heads">
+					<div class="index_detail_body_foot_heads_item" v-for="product in products.lastSevenDays"></div>
+					<div class="clear"></div>
+				</div>
+				<div class="index_detail_body_foot_footOne">
+					<div class="index_detail_body_foot_footOne_item" v-for="product in products.lastSevenDays">{{product.date}}</div>
+					<div class="clear"></div>
+				</div>
+				<div class="index_detail_body_foot_footTwo">
+					<div class="index_detail_body_foot_footTwo_item" v-for="product in products.lastSevenDays">{{product.week}}</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript">
+		var indexDetailBody = c('index_detail_body')[0];
+		indexDetailBody.style.minHeight = window.innerHeight + 'px';
+
+		var indexDetailBodyFootHeadItemSon = c('index_detail_body_foot_head_item_son');
+		var indexDetailBodyFootHeadItemP = c('index_detail_body_foot_head_item_p');
+		for(var i = 0; i < rankViewObj.lastSevenDays.length; i++){
+			indexDetailBodyFootHeadItemSon[i].style.height = 10*parseInt(rankViewObj.lastSevenDays[i].text)/100 + 'rem';
+			indexDetailBodyFootHeadItemP[i].style.marginTop = 10-10*parseInt(rankViewObj.lastSevenDays[i].text)/100 + 'rem';
+		}
+	</script>
+</body>
+</html>
