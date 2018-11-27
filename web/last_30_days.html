@@ -31,21 +31,21 @@
 	</header>
 	<div class="header"></div>
 	<div class="ranking_home" id="last_30_days">
-		<div class="ranking_home_body" v-for="(product,index) in products">
-			<div class="ranking_home_body_list" v-on:click="greet(product.machId)">
+		<div class="ranking_home_body last_30_days_body" v-for="(product,index) in products">
+			<div class="ranking_home_body_list last_30_days_body_list" v-on:click="greet(product.machId)">
 				<div class="ranking_home_body_list_left">
-					<div class="ranking_home_body_list_left_left">{{index+1}}</div>
-					<div class="ranking_home_body_list_left_center" v-if="product.typeId=='Bending'" style="background-color: #3E77B4; font-size: 1.8rem; line-height: 3.7rem;">{{product.typeName}}</div>
-					<div class="ranking_home_body_list_left_center" v-if="product.typeId=='Punching'" style="background-color: #F39518; font-size: 1.8rem; line-height: 3.7rem;">{{product.typeName}}</div>
-					<div class="ranking_home_body_list_left_center" v-if="product.typeId=='welding-robot'" style="background-color: #33A638; font-size: 1.4rem; line-height: 1.9rem;">{{product.typeName}}</div>
-					<div class="ranking_home_body_list_left_center" v-if="product.typeId=='welding'" style="background-color: #E9504E; font-size: 1.4rem; line-height: 1.9rem;">{{product.typeName}}</div>
-					<div class="ranking_home_body_list_left_center" v-if="product.typeId=='spot-welder'" style="background-color: #942CAE; font-size: 1.8rem; line-height: 3.7rem;">{{product.typeName}}</div>
-					<div class="ranking_home_body_list_left_right">{{product.name}}</div>
+					<!-- <div class="ranking_home_body_list_left_left last_30_days_home_body_list_left_left">{{index+1}}</div> -->
+					<!-- <div class="ranking_home_body_list_left_center last_30_days_home_body_list_left_center" v-if="product.typeId=='Bending'" style="background-color: #3E77B4; font-size: 1.8rem; line-height: 3.7rem;">{{product.typeName}}</div>
+					<div class="ranking_home_body_list_left_center last_30_days_home_body_list_left_center" v-if="product.typeId=='Punching'" style="background-color: #F39518; font-size: 1.8rem; line-height: 3.7rem;">{{product.typeName}}</div>
+					<div class="ranking_home_body_list_left_center last_30_days_home_body_list_left_center" v-if="product.typeId=='welding-robot'" style="background-color: #33A638; font-size: 1.4rem; line-height: 1.9rem;">{{product.typeName}}</div>
+					<div class="ranking_home_body_list_left_center last_30_days_home_body_list_left_center" v-if="product.typeId=='welding'" style="background-color: #E9504E; font-size: 1.4rem; line-height: 1.9rem;">{{product.typeName}}</div>
+					<div class="ranking_home_body_list_left_center last_30_days_home_body_list_left_center" v-if="product.typeId=='spot-welder'" style="background-color: #942CAE; font-size: 1.8rem; line-height: 3.7rem;">{{product.typeName}}</div> -->
+					<div class="ranking_home_body_list_left_right last_30_days_home_body_list_left_right"><b></b>{{product.machName}}</div>
 					<div class="clear"></div>
 				</div>
 				<div class="ranking_home_body_list_right">
-					<div class="ranking_home_body_list_right_left last_30_days_home_body_list_right_left" style="color: #666666">{{product.text}}</div>
-					<div class="ranking_home_body_list_right_right">
+					<div class="ranking_home_body_list_right_left last_30_days_home_body_list_right_left" style="color: #FA5454">{{product.text}}</div>
+					<div class="ranking_home_body_list_right_right last_30_days_home_body_list_right_right">
 						<span v-if="product.owner == 'zjjf'" style="background-color: #F39518">{{product.ownerText.substr(0, 2)}}</span>
 						<span v-if="product.owner == 'dgjf'" style="background-color: #3E77B4">{{product.ownerText.substr(0, 2)}}</span>
 					</div>

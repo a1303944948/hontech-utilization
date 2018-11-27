@@ -81,7 +81,6 @@ header>input{
 .index_home{
 	width: 100%;
 	height: calc(100% - 4rem);
-	-webkit-overflow-scrolling: touch;
 }
 .index_home_left_item_head{
 	width: 100%;
@@ -234,9 +233,7 @@ header>input{
 .ranking_home{
 	width: 100%;
 	height: calc(100% - 4rem);
-	overflow-y: auto;
-	-webkit-overflow-scrolling: touch;
-}
+	overflow-y: auto;}
 .ranking_home_head{
 	width: 100%;
 	height: 3.4rem;
@@ -628,7 +625,6 @@ header>input{
 	width: 100%;
 	height: calc(100% - 4rem);
 	overflow-y: auto;
-	-webkit-overflow-scrolling: touch;
 }
 .record_home>table{
 	width: 100%;
@@ -651,11 +647,48 @@ header>input{
 
 
 
+/**********************************最近三十天**************************************/
+.last_30_days_body{
+}
+.last_30_days_body_list{
+	height: 6rem;
+}
+.last_30_days_home_body_list_left_left{
+	height: 6rem;
+	line-height: 6rem;
+}
+.last_30_days_home_body_list_left_right{
+	height: 6rem;
+	line-height: 6rem;
+	margin-left: 1.5rem;
+}
+.last_30_days_home_body_list_left_right>b{
+	display: inline-block;
+	width: 0.6rem;
+	height: 0.6rem;
+	background-color: #667788;
+	border-radius: 50%;
+	margin-right: 1.5rem;
+}
+.last_30_days_home_body_list_left_center{
+	height: 6rem;
+	line-height: 6rem;
+	border-radius: 0.7rem;
+}
+.last_30_days_home_body_list_right_left{
+	height: 6rem;
+	line-height: 6rem;
+}
+.last_30_days_home_body_list_right_right{
+	height: 6rem;
+	line-height: 6rem;
+}
+
+
 /**********************************最近三十天详情样式**************************************/
 .last_30_days_view{
 	width: 100%;
 	height: auto;
-	min-height: 80rem;
 	background-image: url('../image/back.png');
 }
 .last_30_days_view_head{
@@ -718,4 +751,52 @@ header>input{
 	margin-top: 2rem;
 	color: #3ABC40;
 	float: right;
+}
+.last_30_days_view_foot{
+	width: calc(100% - 4rem);
+	height: auto;
+	padding: 2rem;
+}
+.last_30_days_view_foot>table{
+	width: 100%;
+	height: auto;
+}
+.last_30_days_view_foot>table>thead th{
+	height: 2.4rem;
+	line-height: 2.4rem;
+	font-size: 1.5rem;
+	color: #ffffff;
+}
+.last_30_days_view_foot>table>tbody td{
+	height: 5rem;
+	color: #ffffff;
+	position: relative;
+}
+
+.last_30_days_view_foot>table>tbody td>b{
+	display: block;
+	height: 2rem;
+	line-height: 2rem;
+	font-size: 1.4rem;
+	padding-left: 1rem;
+	color: #ffffff;
+}
+.last_30_days_view_foot>table>tbody td>b>i{
+	display: block;
+	width: 2.4rem;
+	height: 0.1rem;
+	position: absolute;
+	top: 46%;
+	left: 1rem;
+	transform: rotate(-55deg);
+	background-color: #ffffff;
+}
+.last_30_days_view_foot>table>tbody td>span{
+	display: block;
+	height: 2rem;
+	font-size: 1.4rem;
+	font-weight: 700;
+	text-align: right;
+	padding-right: 1rem;
+	color: #ffffff;
 }
