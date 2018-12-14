@@ -118,7 +118,7 @@ function alern(text,name,btn,btns){
 		divbtn.style.backgroundColor = '#0D6FB8';
 	}
 	divbtn.onmouseup = function(){
-		fixed.style.display = "none";
+		fixed.parentNode.removeChild(fixed);
 		divbtn.style.backgroundColor = '#0E76C6';
 		document.onkeydown = false;
 	}
@@ -132,21 +132,59 @@ function alern(text,name,btn,btns){
 		divbtn.style.backgroundColor = '#0D6FB8';
 	}
 	divbtns.onmouseup = function(){
-		fixed.style.display = "none";
+		fixed.parentNode.removeChild(fixed);
 		divbtn.style.backgroundColor = '#0E76C6';
 		document.onkeydown = false;
 	}
 	document.onkeydown = function(e){
 		if(e.keyCode == 13){
-			fixed.style.display = "none";
+		fixed.parentNode.removeChild(fixed);
 			document.onkeydown = false;
 		}
 		if(e.keyCode == 32){
-			fixed.style.display = "none";
+		fixed.parentNode.removeChild(fixed);
 			document.onkeydown = false;
 			return false;
 		}
 	}
+}
+
+window.alert = function (txt, time) {
+    if (document.getElementById("alertFram")) {
+        return;
+    }
+    var alertDiv = document.createElement("DIV");
+    alertDiv.id = "alertFram";
+    alertDiv.style.position = "absolute";
+    alertDiv.style.left = "50%";
+    alertDiv.style.top = "40%";
+    alertDiv.style.width = "auto";
+    alertDiv.style.minWidth = '300px';
+    alertDiv.style.height = "auto";
+    alertDiv.style.minHeight = '150px';
+    alertDiv.style.background = "#ccc";
+    alertDiv.style.textAlign = "center";
+    alertDiv.style.lineHeight = "150px";
+    alertDiv.style.zIndex = "10000";
+    alertDiv.innerHTML = "<ul style='list-style:none;margin:0px;padding:0px;width:100%'><li style='background:#0D6FB8;text-align:left;padding-left:10px;font-size:14px;font-weight:bold;height:27px;line-height:25px;border:1px solid #d4d4d4;'>温馨提示</li><li style='background:#fff;text-align:center;font-size:12px;height:auto;border-left:1px solid #d4d4d4;border-right:1px solid #d4d4d4;'>" + txt + "</li><li style='background:#FDEEF4;text-align:center;font-weight:bold;height:27px;line-height:25px; border:1px solid #F9CADE;'onclick='doOk()'><input type='button' style='background-color: #FDEEF4;border: none;outline:none;' value='确 定'/></li></ul>";
+    document.body.appendChild(alertDiv);
+    alertDiv.style.marginLeft = -alertDiv.clientWidth/2 + 'px';
+    alertDiv.style.marginTop = -alertDiv.clientHeight/2 + 'px';
+    var c = 0;
+    this.timer = function () {
+        if (c++ >= time) {
+            clearInterval(ad);
+            document.body.removeChild(alertDiv);
+        }
+    }
+    var ad = setInterval("timer()", 1000);
+    this.doOk = function () {
+        document.body.removeChild(alertDiv);
+    }
+    alertDiv.focus();
+    document.body.onselectstart = function () {
+        return false;
+    };
 }
 
 var loadingTimore;
@@ -220,4 +258,27 @@ function loadingClear(){
 	var body = n('body')[0];
 	var load = c('body_load')[0];
 	body.removeChild(load);
+}
+
+function ajax(type,url,data,succ,error,json,async){
+	var xhr = new XMLHttpRequest ();
+	if(async != true&&async != false){
+		async = true;
+	}
+	xhr.open(type,url,async);
+	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xhr.send(data);
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState == 4){
+			if(xhr.status == 200){
+				if(json == 'json'){
+					succ(JSON.parse(xhr.responseText));
+				}else{
+					succ(xhr.responseText);
+				}
+			}else{
+				error(xhr.status);
+			}
+		}
+	}
 }

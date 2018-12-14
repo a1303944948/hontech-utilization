@@ -9,23 +9,21 @@
 	<meta name="format-detection" content="telephone=no, email=no" />
 	<link rel="icon" type="image/x-icon" href="image/logos.jpg"/>
 	<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 	<script type="text/javascript" src="js/wm.js"></script>
 	<script type="text/javascript" src="js/object.js"></script>
 	<script type="text/javascript" src="js/vue.js"></script>
 </head>
 <body>
 	<header id="record_header">
-		<select>
+		<select id="record_header_company">
 			<option value="">公司...</option>
 			<option value="zjjf">浙江</option>
 			<option value="dgjf">东莞</option>
 		</select>
-		<select>
+		<select id="record_header_type">
 			<option value="">设备类型...</option>
-			<option value="zc">折床</option>
-			<option value="cc">冲压</option>
-			<option value="jqhj">机器焊接</option>
-			<option value="sghj">手工焊接</option>
+			<option :value="product.devtypeid" v-for="product in products">{{product.devtypename}}</option>
 		</select>
 		<button class="record_header_search">查询</button>
 	</header>
@@ -55,6 +53,47 @@
 	</footer>
 	<script type="text/javascript" src="js/index.js"></script>
 	<script type="text/javascript">
+		ajax('post',URL + 'com/cli/type/select.json',"",function(data){
+	        var appType = new Vue({
+	            el: '#record_header_type',
+	            data: {
+	                products: data.listData,
+	            }
+	        })
+		},function(err){
+			console.log(err);
+		},'json');
+
+		var appz;
+
+		c('record_header_search')[0].ontouchend = function(){
+		    var recordHeaderCompany = d('record_header_company').value;
+		    var recordHeaderType = d('record_header_type').value;
+		    console.log(recordHeaderCompany);
+		    console.log(recordHeaderType);
+
+			ajax('post',URL + 'com/cli/cmm/indexDev.json','companyid='+recordHeaderCompany+'&devtypeid='+recordHeaderType,function(data){
+				console.log(data);
+		    	appz.products = data.obj;
+			},function(err){
+				console.log(err);
+			},'json')
+		}
+
+
+	    var recordHeaderCompany = d('record_header_company').value;
+	    var recordHeaderType = d('record_header_type').value;
+		ajax('post',URL + 'com/cli/cmm/indexDev.json','companyid='+recordHeaderCompany+'&devtypeid='+recordHeaderType,function(data){
+			console.log(data);
+			appz = new Vue({
+			    el: '#record_home',
+			    data: {
+			        products: data.obj,
+			    }
+			})
+		},function(err){
+			console.log(err);
+		},'json')
 	</script>
 </body>
 </html>

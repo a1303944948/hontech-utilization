@@ -59,6 +59,20 @@
             <input type="text" id="name" lay-verify="title" autocomplete="off" placeholder="请输入类别名称" class="layui-input">
           </div>
         </div>
+        <div class="layui-form-item" style="width: 500px;">
+          <div class="layui-inline">
+            <label class="layui-form-label">检测端口</label>
+            <div class="layui-input-inline">
+              <select id="companyname" lay-verify="required" lay-search="">
+                <option value="1">交流计次</option>
+                <option value="2">直流计次</option>
+                <option value="3">大电流计时</option>
+                <option value="4">大电流计次</option>
+                <option value="5">开关量计次</option>
+              </select>
+            </div>
+          </div>
+        </div>
         <div class="layui-form-item">
           <div class="layui-input-block">
             <button class="layui-btn" id="submit">立即提交</button>
@@ -75,6 +89,7 @@
   $('#submit').click(function(){
     var number = $('#number').val();
     var name = $('#name').val();
+    var port = $('#companyname').val();
     var objError = "";
     console.log(number);
     console.log(name);
@@ -98,6 +113,7 @@
         data: {
           devtypecode: number,
           devtypename: name,
+          port: port,
         },
         success: function(data){
           console.log(data);
@@ -170,6 +186,17 @@
   $('#rest').click(function(){
           count = 0;
   })
+
+  layui.use(['form', 'layedit', 'laydate'], function(){
+
+    //日期
+    
+    //创建一个编辑器
+   
+    //自定义验证规则
+   
+    //表单初始赋值
+  });
 //JavaScript代码区域
 </script>
 </body>

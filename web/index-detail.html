@@ -9,6 +9,7 @@
 	<meta name="format-detection" content="telephone=no, email=no" />
 	<link rel="icon" type="image/x-icon" href="image/logos.jpg"/>
 	<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 	<script type="text/javascript" src="js/wm.js"></script>
 	<script type="text/javascript" src="js/object.js"></script>
 	<script type="text/javascript" src="js/vue.js"></script>
@@ -76,6 +77,26 @@
 	<script type="text/javascript">
 		var indexDetailBody = c('index_detail_body')[0];
 		indexDetailBody.style.minHeight = window.innerHeight + 'px';
+		
+
+		function GetQueryString(name){
+			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r!=null)return  unescape(r[2]); return null;
+	    }
+	    var devcode = GetQueryString('machId');
+	    var time = GetQueryString('dataId');
+	    ajax('post',URL + 'com/cli/cmm/indexDEVdetail.json','devcode=' + devcode + '&time=' + time,function(data){
+	    	console.log(data);
+			var appv = new Vue({
+			    el: '#index_detail_home',
+			    data: {
+			        products: data.obj,
+			    },
+			})
+	    },function(err){
+	    	console.log(msg);
+	    },'json');
 
 		var indexDetailBodyFootHeadItemSon = c('index_detail_body_foot_head_item_son');
 		var indexDetailBodyFootHeadItemP = c('index_detail_body_foot_head_item_p');
@@ -83,6 +104,6 @@
 			indexDetailBodyFootHeadItemSon[i].style.height = 10*parseInt(rankViewObj.lastSevenDays[i].text)/100 + 'rem';
 			indexDetailBodyFootHeadItemP[i].style.marginTop = 10-10*parseInt(rankViewObj.lastSevenDays[i].text)/100 + 'rem';
 		}
-	</script>
+</script>
 </body>
 </html>

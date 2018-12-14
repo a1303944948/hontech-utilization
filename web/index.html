@@ -9,31 +9,29 @@
 	<meta name="format-detection" content="telephone=no, email=no" />
 	<link rel="icon" type="image/x-icon" href="image/logos.jpg"/>
 	<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 	<script type="text/javascript" src="js/wm.js"></script>
 	<script type="text/javascript" src="js/object.js"></script>
 	<script type="text/javascript" src="js/vue.js"></script>
 </head>
 <body>
 	<header id="ranking_header">
-		<select>
+		<select id="ranking_header_company">
 			<option value="">公司...</option>
 			<option value="zjjf">浙江</option>
 			<option value="dgjf">东莞</option>
 		</select>
-		<select>
+		<select id="ranking_header_type">
 			<option value="">设备类型...</option>
-			<option value="zc">折床</option>
-			<option value="cc">冲压</option>
-			<option value="jqhj">机器焊接</option>
-			<option value="sghj">手工焊接</option>
+			<option :value="product.devtypeid" v-for="product in products">{{product.devtypename}}</option>
 		</select>
-		<select>
-			<option value="昨天">昨天</option>
-			<option value="本周">最近七天</option>
-			<option value="上周">上周</option>
-			<option value="本月">最近三十天</option>
-			<option value="上月">上月</option>
-			<option value="上月">最近九十天</option>
+		<select id="ranking_header_date">
+			<option value="1">昨天</option>
+			<option value="2">最近七天</option>
+			<option value="3">上周</option>
+			<option value="4">最近三十天</option>
+			<option value="5">上月</option>
+			<option value="6">最近九十天</option>
 		</select>
 		<button class="ranking_header_search">查询</button>
 	</header>
@@ -136,8 +134,67 @@
 	</footer>
 	<script type="text/javascript" src="js/index.js"></script>
 	<script type="text/javascript">
+
 		var rankingHomeBodyItem = c('ranking_home_body_item');	//设备列表
 		var rankingHomeBodyItemContext = c('ranking_home_body_item_context');	//设备详情
+
+		$.ajax({    //获取设备类别
+		    type: 'post',
+		    url: URL + 'com/cli/type/select.json',
+		    data: {},
+		    success: function(data){
+		        console.log(data);
+		        var appType = new Vue({
+		            el: '#ranking_header_type',
+		            data: {
+		                products: data.listData,
+		            }
+		        })
+		    }
+		});
+
+		var apps;
+		c('ranking_header_search')[0].ontouchend = function(){
+		    var rankingHeaderCompany = d('ranking_header_company').value;
+		    var rankingHeaderType = d('ranking_header_type').value;
+		    var rankingHeaderDate = d('ranking_header_date').value;
+
+			ajax('post',URL + 'com/cli/cmm/index.json','companyid='+rankingHeaderCompany+'&devtypeid='+rankingHeaderType+'&time='+rankingHeaderDate,function(data){
+	            console.log(data);
+	            apps.products = data.obj;
+			},function(err){
+				console.log(err);
+			},'json',true);
+		}
+
+	    var rankingHeaderCompany = d('ranking_header_company').value;
+	    var rankingHeaderType = d('ranking_header_type').value;
+	    var rankingHeaderDate = d('ranking_header_date').value;
+	    $.ajax({
+	        type: 'post',
+	        url: URL +  'com/cli/cmm/index.json',
+	        data: {
+	        	companyid: rankingHeaderCompany,
+	        	devtypeid: rankingHeaderType,
+	        	time: rankingHeaderDate,
+	        },
+	        success: function(data){
+	            console.log(data);
+	            apps = new Vue({
+				    el: '#ranking_home',
+				    data: {
+				        products: data.obj,//rankObj
+				    },
+				    methods: {
+				        greet: function (machId) {
+		    				var rankingHeaderDate = d('ranking_header_date').value;
+				            location.href = 'index-detail.html?machId=' + machId + '&dataId=' + rankingHeaderDate;
+				        }
+				    }
+				})
+	        }
+	    })
+
 		/*var count = -1;
 		for(var i = 0; i < rankingHomeBodyItem.length; i++){
 			(function(q){

@@ -9,23 +9,21 @@
 	<meta name="format-detection" content="telephone=no, email=no" />
 	<link rel="icon" type="image/x-icon" href="image/logos.jpg"/>
 	<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 	<script type="text/javascript" src="js/wm.js"></script>
 	<script type="text/javascript" src="js/object.js"></script>
 	<script type="text/javascript" src="js/vue.js"></script>
 </head>
 <body>
 	<header id="ranking_header">
-		<select>
+		<select id="last_header_company">
 			<option value="">公司...</option>
 			<option value="zjjf">浙江</option>
 			<option value="dgjf">东莞</option>
 		</select>
-		<select>
+		<select id="last_header_type">
 			<option value="">设备类型...</option>
-			<option value="zc">折床</option>
-			<option value="cc">冲压</option>
-			<option value="jqhj">机器焊接</option>
-			<option value="sghj">手工焊接</option>
+			<option :value="product.devtypeid" v-for="product in products">{{product.devtypename}}</option>
 		</select>
 		<button class="ranking_header_search">查询</button>
 	</header>
@@ -127,25 +125,37 @@
 	</footer>
 	<script type="text/javascript" src="js/index.js"></script>
 	<script type="text/javascript">
-		var rankingHomeBodyItem = c('ranking_home_body_item');	//设备列表
-		var rankingHomeBodyItemContext = c('ranking_home_body_item_context');	//设备详情
-		/*var count = -1;
-		for(var i = 0; i < rankingHomeBodyItem.length; i++){
-			(function(q){
-				rankingHomeBodyItem[q].children[2].ontouchend = function(){
-					for(var j = 0; j < rankingHomeBodyItemContext.length; j++){
-						rankingHomeBodyItemContext[j].style.height = "0rem";
-					}
-					if(count == q){
-						count = -1;
-						rankingHomeBodyItemContext[q].style.height = "0rem";
-					}else{
-						count = q;
-						rankingHomeBodyItemContext[q].style.height = "10rem";
-					}
-				}
-			})(i)
-		}*/
+
+		ajax('post',URL + 'com/cli/type/select.json',"",function(data){
+	        var appType = new Vue({
+	            el: '#last_header_type',
+	            data: {
+	                products: data.listData,
+	            }
+	        })
+		},function(err){
+			console.log(err);
+		},'json');
+
+
+		var lastHeaderCompany = d('last_header_company').value;
+		var lastHeaderType = d('last_header_type').value;
+		ajax('post',URL + 'com/cli/cmm/indexNear.json','companyid='+lastHeaderCompany+'&devtypeid='+lastHeaderType,function(data){
+			console.log(data);
+			var appxs = new Vue({
+			    el: '#last_30_days',
+			    data: {
+			        products: data.obj,
+			    },
+			    methods: {
+			        greet: function (machId) {
+			            location.href = 'last_30_days_view.html?machId=' + machId;
+			        }
+			    }
+			})
+		},function(err){
+			console.log(err);
+		},'json')
 	</script>
 </body>
 </html>

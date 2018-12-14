@@ -91,3 +91,5 @@ var last30days = [
 //machId设备ID  machName设备名称  group组长  manager经理  total最近三十天总做功  stop未做功天数  start做功天数  
 //dateArr最近三十天做功明细一共三十条数据，做功传1，未做功传0，时间为当前的前一天为开始时间
 var last30daysView = {machId: '1',machName: '折床001',group: '邢天铭',manager: '黄勤飞',total: '35800',stop: '20',start: '10',dateArr: [1,0,1,1,1,0,1,1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,1,0,0,1,1,1,1,1]};
+
+var URL = 'http://10.1.8.45:8080/';

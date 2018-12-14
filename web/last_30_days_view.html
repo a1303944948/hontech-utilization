@@ -9,6 +9,7 @@
 	<meta name="format-detection" content="telephone=no, email=no" />
 	<link rel="icon" type="image/x-icon" href="image/logos.jpg"/>
 	<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 	<script type="text/javascript" src="js/wm.js"></script>
 	<script type="text/javascript" src="js/object.js"></script>
 	<script type="text/javascript" src="js/vue.js"></script>
@@ -54,7 +55,12 @@
 		var last30DaysView = c('last_30_days_view')[0];
 		last30DaysView.style.minHeight = window.innerHeight + 'px';
 		var last30DaysViewFootTbody = c('last_30_days_view_foot_tbody')[0];
-		console.log(last30daysView.dateArr);
+		function GetQueryString(name){
+			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r!=null)return  unescape(r[2]); return null;
+	    }
+	    var machCode = GetQueryString('machId');
 		var endDate = new Date(new Date()-86400000);
 		var sdate;
 		var smonth;
@@ -65,36 +71,62 @@
 			smonth = startDate.getMonth() + 1;
 			sday = startDate.getDay();
 		}
-		var tr;
-		for(var i = last30daysView.dateArr.length; i > 0; i--){
-			//console.log(last30daysView.dateArr[i-1]);
-			var color;
-			if(last30daysView.dateArr[i-1] == 1){
-				color = '#3ABC40';
-			}else{
-				color = '#FA5454';
-			}
-			startTime(i+1);
-			console.log(i,sdate,smonth,sday,last30daysView.dateArr[i-1]);
-			if(i == 30){
-				tr = creat('tr');
-				for(var j = 0; j < sday; j++){
-					var td = creat('td');
-					tr.appendChild(td);
+		console.log(machCode);
+		$.ajax({
+			type: 'post',
+			url: URL + 'com/cli/cmm/indexNearDetail.json',
+			data: {
+				devcode: machCode,
+			},
+			async: false,
+			success: function(data){
+				console.log(data);
+				for(var i = 0; i < data.obj.dateArr.length; i++){
+					data.obj.dateArr[i] = Number(data.obj.dateArr[i]);
 				}
+				last30daysView.dateArr = data.obj.dateArr;
+				var tr;
+				for(var i = last30daysView.dateArr.length; i > 0; i--){
+					//console.log(last30daysView.dateArr[i-1]);
+					var color;
+					if(last30daysView.dateArr[i-1] == 1){
+						color = '#3ABC40';
+					}else{
+						color = '#FA5454';
+					}
+					startTime(i+1);
+					console.log(i,sdate,smonth,sday,last30daysView.dateArr[i-1]);
+					if(i == 30){
+						tr = creat('tr');
+						for(var j = 0; j < sday; j++){
+							var td = creat('td');
+							tr.appendChild(td);
+						}
+					}
+					var td = creat('td');
+					td.style.backgroundColor = color;
+					td.innerHTML = '<b>' + smonth + '<i></i></b><span>' + sdate + '</span>';
+					tr.appendChild(td);
+					if(sday == 6){
+						last30DaysViewFootTbody.appendChild(tr);
+						tr = creat('tr');
+					}
+					if(i == 1){
+						last30DaysViewFootTbody.appendChild(tr);
+					}
+				}
+				console.log(last30DaysViewFootTbody);
+				var appxsv = new Vue({
+				    el: '#last_30_days_view',
+				    data: {
+				        products: last30daysView,
+				    }
+				})
 			}
-			var td = creat('td');
-			td.style.backgroundColor = color;
-			td.innerHTML = '<b>' + smonth + '<i></i></b><span>' + sdate + '</span>';
-			tr.appendChild(td);
-			if(sday == 6){
-				last30DaysViewFootTbody.appendChild(tr);
-				tr = creat('tr');
-			}
-			if(i == 1){
-				last30DaysViewFootTbody.appendChild(tr);
-			}
-		}
+		})
+
+
+
 	</script>
 </body>
 </html>
