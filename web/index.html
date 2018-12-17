@@ -143,7 +143,6 @@
 		    url: URL + 'com/cli/type/select.json',
 		    data: {},
 		    success: function(data){
-		        console.log(data);
 		        var appType = new Vue({
 		            el: '#ranking_header_type',
 		            data: {
@@ -159,27 +158,38 @@
 		    var rankingHeaderType = d('ranking_header_type').value;
 		    var rankingHeaderDate = d('ranking_header_date').value;
 
+	    	loading();
 			ajax('post',URL + 'com/cli/cmm/index.json','companyid='+rankingHeaderCompany+'&devtypeid='+rankingHeaderType+'&time='+rankingHeaderDate,function(data){
-	            console.log(data);
+	            //console.log(data);
+	        	loadingClear();
+	            data.obj.sort(function(a,b){
+            		return parseFloat(b.text)-parseFloat(a.text)
+            	});
 	            apps.products = data.obj;
 			},function(err){
+	        	loadingClear();
 				console.log(err);
 			},'json',true);
 		}
 
 	    var rankingHeaderCompany = d('ranking_header_company').value;
 	    var rankingHeaderType = d('ranking_header_type').value;
+	    d('ranking_header_date').children[0].selected = 'selected';
 	    var rankingHeaderDate = d('ranking_header_date').value;
+	    loading();
 	    $.ajax({
 	        type: 'post',
 	        url: URL +  'com/cli/cmm/index.json',
 	        data: {
 	        	companyid: rankingHeaderCompany,
 	        	devtypeid: rankingHeaderType,
-	        	time: rankingHeaderDate,
+	        	time: 1,
 	        },
 	        success: function(data){
-	            console.log(data);
+	        	loadingClear();
+	            data.obj.sort(function(a,b){
+            		return parseFloat(b.text)-parseFloat(a.text)
+            	});
 	            apps = new Vue({
 				    el: '#ranking_home',
 				    data: {
@@ -192,6 +202,9 @@
 				        }
 				    }
 				})
+	        },
+	        error: function(){
+	        	loadingClear();
 	        }
 	    })
 

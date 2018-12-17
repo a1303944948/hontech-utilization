@@ -149,107 +149,69 @@ function alern(text,name,btn,btns){
 	}
 }
 
-window.alert = function (txt, time) {
-    if (document.getElementById("alertFram")) {
-        return;
-    }
-    var alertDiv = document.createElement("DIV");
-    alertDiv.id = "alertFram";
-    alertDiv.style.position = "absolute";
-    alertDiv.style.left = "50%";
-    alertDiv.style.top = "40%";
-    alertDiv.style.width = "auto";
-    alertDiv.style.minWidth = '300px';
-    alertDiv.style.height = "auto";
-    alertDiv.style.minHeight = '150px';
-    alertDiv.style.background = "#ccc";
-    alertDiv.style.textAlign = "center";
-    alertDiv.style.lineHeight = "150px";
-    alertDiv.style.zIndex = "10000";
-    alertDiv.innerHTML = "<ul style='list-style:none;margin:0px;padding:0px;width:100%'><li style='background:#0D6FB8;text-align:left;padding-left:10px;font-size:14px;font-weight:bold;height:27px;line-height:25px;border:1px solid #d4d4d4;'>温馨提示</li><li style='background:#fff;text-align:center;font-size:12px;height:auto;border-left:1px solid #d4d4d4;border-right:1px solid #d4d4d4;'>" + txt + "</li><li style='background:#FDEEF4;text-align:center;font-weight:bold;height:27px;line-height:25px; border:1px solid #F9CADE;'onclick='doOk()'><input type='button' style='background-color: #FDEEF4;border: none;outline:none;' value='确 定'/></li></ul>";
-    document.body.appendChild(alertDiv);
-    alertDiv.style.marginLeft = -alertDiv.clientWidth/2 + 'px';
-    alertDiv.style.marginTop = -alertDiv.clientHeight/2 + 'px';
-    var c = 0;
-    this.timer = function () {
-        if (c++ >= time) {
-            clearInterval(ad);
-            document.body.removeChild(alertDiv);
-        }
-    }
-    var ad = setInterval("timer()", 1000);
-    this.doOk = function () {
-        document.body.removeChild(alertDiv);
-    }
-    alertDiv.focus();
-    document.body.onselectstart = function () {
-        return false;
-    };
-}
-
 var loadingTimore;
 function loading(text){
-	window.onload = function(){
-		if(text == undefined){
-			text = "加载中";
+	if(text == undefined){
+		text = "加载中";
+	}
+	var body = n('body')[0];
+	var load = creat('div');
+	load.className = "body_load";
+	load.style.width = "100%";
+	load.style.height = "100%";
+	load.style.position = 'fixed';
+	load.style.left = '0px';
+	load.style.top = '0px';
+	load.style.backgroundColor = "rgba(0,0,0,0.7)";
+	load.style.zIndex = '9999999';
+	var loadDiv = creat('div');
+	loadDiv.style.width = '160px';
+	loadDiv.style.height = '160px';
+	loadDiv.style.position = 'absolute';
+	loadDiv.style.top = '50%';
+	loadDiv.style.left = '50%';
+	loadDiv.style.marginTop = '-80px';
+	loadDiv.style.marginLeft = '-80px';
+	var loadDivItem = creat('div');
+	loadDivItem.style.width = '160px';
+	loadDivItem.style.height = '160px';
+	loadDivItem.style.position = 'absolute';
+	loadDivItem.style.top = '0px';
+	loadDivItem.style.left = '0px';
+	loadDivItem.style.textAlign = 'center';
+	loadDivItem.style.fontSize = '12px';
+	loadDivItem.style.lineHeight = '160px';
+	loadDivItem.style.color = '#ffffff';
+	loadDiv.appendChild(loadDivItem);
+	loadDivItem.innerHTML = text;
+	var loadCount = 0;
+	loadingTimore = setInterval(function(){
+		loadCount++;
+		if(loadCount == 1){
+			loadDivItem.innerHTML = text + '●';
 		}
-		var body = n('body')[0];
-		var load = creat('div');
-		load.className = "body_load";
-		load.style.width = "100%";
-		load.style.height = "100%";
-		load.style.position = 'fixed';
-		load.style.left = '0px';
-		load.style.top = '0px';
-		load.style.backgroundColor = "rgba(0,0,0,0.7)";
-		load.style.zIndex = '9999999';
-		var loadDiv = creat('div');
-		loadDiv.style.width = '160px';
-		loadDiv.style.height = '160px';
-		loadDiv.style.position = 'absolute';
-		loadDiv.style.top = '50%';
-		loadDiv.style.left = '50%';
-		loadDiv.style.marginTop = '-80px';
-		loadDiv.style.marginLeft = '-80px';
-		var loadDivItem = creat('div');
-		loadDivItem.style.width = '160px';
-		loadDivItem.style.height = '160px';
-		loadDivItem.style.position = 'absolute';
-		loadDivItem.style.top = '0px';
-		loadDivItem.style.left = '0px';
-		loadDivItem.style.textAlign = 'center';
-		loadDivItem.style.fontSize = '12px';
-		loadDivItem.style.lineHeight = '160px';
-		loadDivItem.style.color = '#ffffff';
-		loadDiv.appendChild(loadDivItem);
-		loadDivItem.innerHTML = text;
-		var loadCount = 0;
-		loadingTimore = setInterval(function(){
-			loadCount++;
-			if(loadCount == 1){
-				loadDivItem.innerHTML = text + '●○○';
-			}
-			if(loadCount == 2){
-				loadDivItem.innerHTML = text + '●●○';
-			}
-			if(loadCount == 3){
-				loadDivItem.innerHTML = text + '●●●';
-				loadCount = 0;
-			}
-		},300);
-		var loadDivImg = new Image();
-		loadDivImg.src = 'image/loding.png';
-		loadDivImg.className = 'body_load_div_image';
-		loadDivImg.style.width = '100%';
-		loadDivImg.style.height = '100%';
-		loadDivImg.style.position = 'absolute';
-		loadDivImg.style.top = '0px';
-		loadDivImg.style.left = '0px';
-		loadDiv.appendChild(loadDivImg);
-		load.appendChild(loadDiv);
-		console.log(loadDiv);
-		console.log(body);
-		console.log(load);
+		if(loadCount == 2){
+			loadDivItem.innerHTML = text + '●●';
+		}
+		if(loadCount == 3){
+			loadDivItem.innerHTML = text + '●●●';
+			loadCount = 0;
+		}
+	},300);
+	var loadDivImg = new Image();
+	loadDivImg.src = 'image/loding.png';
+	loadDivImg.className = 'body_load_div_image';
+	loadDivImg.style.width = '100%';
+	loadDivImg.style.height = '100%';
+	loadDivImg.style.position = 'absolute';
+	loadDivImg.style.top = '0px';
+	loadDivImg.style.left = '0px';
+	loadDiv.appendChild(loadDivImg);
+	load.appendChild(loadDiv);
+	console.log(loadDiv);
+	console.log(body);
+	console.log(load);
+	if(body != undefined){
 		body.appendChild(load);
 	}
 }

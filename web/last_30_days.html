@@ -137,12 +137,35 @@
 			console.log(err);
 		},'json');
 
+		var appxs;
+		var rankingHeaderSearch = c('ranking_header_search')[0];
+		rankingHeaderSearch.onmousedown = function(){
+			var lastHeaderCompany = d('last_header_company').value;
+			var lastHeaderType = d('last_header_type').value;
+			loading();
+			ajax('post',URL + 'com/cli/cmm/indexNear.json','companyid='+lastHeaderCompany+'&devtypeid='+lastHeaderType,function(data){
+				console.log(data);
+	        	loadingClear();
+				data.obj.sort(function(a,b){
+					return parseFloat(b.text) - parseFloat(a.text);
+				})
+				appxs.products = data.obj;
+			},function(err){
+	        	loadingClear();
+				console.log(err);
+			},'json')
+		}
 
 		var lastHeaderCompany = d('last_header_company').value;
 		var lastHeaderType = d('last_header_type').value;
+		loading();
 		ajax('post',URL + 'com/cli/cmm/indexNear.json','companyid='+lastHeaderCompany+'&devtypeid='+lastHeaderType,function(data){
 			console.log(data);
-			var appxs = new Vue({
+	        loadingClear();
+			data.obj.sort(function(a,b){
+				return parseFloat(b.text) - parseFloat(a.text);
+			})
+			appxs = new Vue({
 			    el: '#last_30_days',
 			    data: {
 			        products: data.obj,
@@ -154,6 +177,7 @@
 			    }
 			})
 		},function(err){
+	        loadingClear();
 			console.log(err);
 		},'json')
 	</script>

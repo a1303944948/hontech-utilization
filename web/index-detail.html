@@ -53,7 +53,7 @@
 				<div class="index_detail_body_foot_head">
 					<div class="index_detail_body_foot_head_item" v-for="product in products.lastSevenDays">
 						<p class="index_detail_body_foot_head_item_p">{{product.text}}</p>
-						<div class="index_detail_body_foot_head_item_son" v-if="product.text >= product.normal" style="background-color: green"></div>
+						<div class="index_detail_body_foot_head_item_son" v-if="parseInt(product.text) >= product.normal" style="background-color: green"></div>
 						<div class="index_detail_body_foot_head_item_son" v-else style="background-color: red"></div>
 					</div>
 					<div class="clear"></div>
@@ -86,24 +86,27 @@
 	    }
 	    var devcode = GetQueryString('machId');
 	    var time = GetQueryString('dataId');
+	    loading();
 	    ajax('post',URL + 'com/cli/cmm/indexDEVdetail.json','devcode=' + devcode + '&time=' + time,function(data){
 	    	console.log(data);
+	        loadingClear();
 			var appv = new Vue({
 			    el: '#index_detail_home',
 			    data: {
 			        products: data.obj,
 			    },
 			})
+			var indexDetailBodyFootHeadItemSon = c('index_detail_body_foot_head_item_son');
+			var indexDetailBodyFootHeadItemP = c('index_detail_body_foot_head_item_p');
+			for(var i = 0; i < data.obj.lastSevenDays.length; i++){
+				indexDetailBodyFootHeadItemSon[i].style.height = 10*parseInt(data.obj.lastSevenDays[i].text)/100 + 'rem';
+				indexDetailBodyFootHeadItemP[i].style.marginTop = 10-(10*parseInt(data.obj.lastSevenDays[i].text)/100) + 'rem';
+			}
 	    },function(err){
+	        loadingClear();
 	    	console.log(msg);
 	    },'json');
 
-		var indexDetailBodyFootHeadItemSon = c('index_detail_body_foot_head_item_son');
-		var indexDetailBodyFootHeadItemP = c('index_detail_body_foot_head_item_p');
-		for(var i = 0; i < rankViewObj.lastSevenDays.length; i++){
-			indexDetailBodyFootHeadItemSon[i].style.height = 10*parseInt(rankViewObj.lastSevenDays[i].text)/100 + 'rem';
-			indexDetailBodyFootHeadItemP[i].style.marginTop = 10-10*parseInt(rankViewObj.lastSevenDays[i].text)/100 + 'rem';
-		}
 </script>
 </body>
 </html>

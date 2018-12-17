@@ -72,6 +72,7 @@
 			sday = startDate.getDay();
 		}
 		console.log(machCode);
+		loading();
 		$.ajax({
 			type: 'post',
 			url: URL + 'com/cli/cmm/indexNearDetail.json',
@@ -81,10 +82,11 @@
 			async: false,
 			success: function(data){
 				console.log(data);
+	        	loadingClear();
 				for(var i = 0; i < data.obj.dateArr.length; i++){
 					data.obj.dateArr[i] = Number(data.obj.dateArr[i]);
 				}
-				last30daysView.dateArr = data.obj.dateArr;
+				last30daysView = data.obj;
 				var tr;
 				for(var i = last30daysView.dateArr.length; i > 0; i--){
 					//console.log(last30daysView.dateArr[i-1]);
@@ -122,6 +124,9 @@
 				        products: last30daysView,
 				    }
 				})
+			},
+			error: function(){
+	        	loadingClear();
 			}
 		})
 

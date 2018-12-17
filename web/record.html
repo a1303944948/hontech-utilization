@@ -72,19 +72,35 @@
 		    console.log(recordHeaderCompany);
 		    console.log(recordHeaderType);
 
+		    loading();
+			ajax('post',URL + 'com/cli/cmm/indexDev.json','companyid='+recordHeaderCompany+'&devtypeid='+recordHeaderType,function(data){
+				console.log(data);
+	        	loadingClear();
+		    	appz.products = data.obj;
+			},function(err){
+	        	loadingClear();
+				console.log(err);
+			},'json')
+		}
+		setInterval(function(){
+		    var recordHeaderCompany = d('record_header_company').value;
+		    var recordHeaderType = d('record_header_type').value;
+
 			ajax('post',URL + 'com/cli/cmm/indexDev.json','companyid='+recordHeaderCompany+'&devtypeid='+recordHeaderType,function(data){
 				console.log(data);
 		    	appz.products = data.obj;
 			},function(err){
 				console.log(err);
 			},'json')
-		}
+		},600000)
 
 
 	    var recordHeaderCompany = d('record_header_company').value;
 	    var recordHeaderType = d('record_header_type').value;
+	    loading();
 		ajax('post',URL + 'com/cli/cmm/indexDev.json','companyid='+recordHeaderCompany+'&devtypeid='+recordHeaderType,function(data){
 			console.log(data);
+	        loadingClear();
 			appz = new Vue({
 			    el: '#record_home',
 			    data: {
@@ -92,6 +108,7 @@
 			    }
 			})
 		},function(err){
+	        loadingClear();
 			console.log(err);
 		},'json')
 	</script>
