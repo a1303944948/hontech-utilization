@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>鸿丰集团-稼动率系统</title>
+	<link rel="icon" type="image/x-icon" href="image/logo.jpg"/>
+	<script type="text/javascript" src="jquery-3.3.1.js"></script>
+	<style type="text/css">
+		*{
+			padding: 0;
+			margin: 0;
+			color: #303030;
+		}
+		header{
+			width: 100%;
+			height: 120px;
+			line-height: 120px;
+			font-size: 2.4rem;
+			font-weight: 600;
+			color: #D5D6E2;
+			text-align: center;
+			font-family: '楷体';
+			background-color: #23262E;
+			text-shadow: 2px 2px 2px #e5e5e5;
+		}
+		header>img{
+			width: 2.4rem;
+			height: 2.4rem;
+			position: relative;
+			top: 4px;
+			margin-right: 8px;
+			border-radius: 7px;
+		}
+		footer{
+			width: 95%;
+			height: 80px;
+			line-height: 80px;
+			padding-left: 5%;
+			font-size: 14px;
+			color: #D5D6E2;
+			background-color: #23262E;
+		}
+		.home{
+			width: 100%;
+			background-color: #393D49;
+			position: relative;
+		}
+		.home>p{
+			width: 100%;
+			height: 100px;
+			line-height: 100px;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			color: #D5D6E2;
+			text-align: center;
+			font-size: 2rem;
+			font-family: '楷体';
+		}
+		.home_body{
+			width: 450px;
+			height: 350px;
+			margin-left: auto;
+			margin-right: auto;
+			position: relative;
+			background-color: #ffffff;
+			border-radius: 15px;
+			box-shadow: 0px 0px 5px #e5e5e5;
+		}
+		.home_body>p{
+			width: 100%;
+			height: 100px;
+			line-height: 100px;
+			font-size: 2rem;
+			font-weight: 600;
+			letter-spacing: 1px;
+			text-align: center;
+			box-sizing: border-box;
+			border-bottom: 1px #f0f0f0 solid;
+		}
+		.home_body_index{
+			width: 350px;
+			height: 210px;
+			margin-left: auto;
+			margin-right: auto;
+			box-sizing: border-box;
+		}
+		.home_body_index_list{
+			width: 100%;
+			height: 40px;
+			border-radius: 20px;
+			overflow: hidden;
+			background-color: #f0f0f0;
+			position: relative;
+			margin-top: 30px;
+			transition: background-color 1s;
+		}
+		.home_body_index_list_left{
+			width: 20px;
+			height: 40px;
+			margin-left: 20px;
+			float: left;
+		}
+		.home_body_index_list_left>img{
+			width: 20px;
+			height: 20px;
+			margin-top: 10px;
+			position: relative;
+			z-index: 10;
+		}
+		.home_body_index_list_right{
+			width: calc(100% - 60px);
+			height: 40px;
+			position: relative;
+			float: left;
+		}
+		.home_body_index_list_right>input{
+			width: 350px;
+			height: 40px;
+			padding-left: 50px;
+			padding-right: 20px;
+			box-sizing: border-box;
+			position: absolute;
+			top: 0px;
+			left: -40px;
+			font-size: 14px;
+			border: none;
+			background-color: rgba(0,0,0,0);
+			user-select: none;
+			outline: none;
+		}
+		.home_body_index_submit{
+			display: block;
+			width: 100px;
+			height: 40px;
+			border-radius: 20px;
+			margin-top: 30px;
+			margin-left: auto;
+			margin-right: auto;
+			font-size: 14px;
+			border: none;
+			color: #ffffff;
+			outline: none;
+			user-select: none;
+			cursor: pointer;
+			background-color: #00b4ef;
+		}
+		.home_body_index_submit:hover{
+			background-color: #00ADE6;
+		}
+		.home_body_index_submit:active{
+			background-color: #00b4ef;
+		}
+	</style>
+</head>
+<body>
+	<header class="header">
+		<img src="image/logo.jpg"/>鸿丰集团
+	</header>
+	<div class="home">
+		<p>稼动率后台管理系统</p>
+		<div class="home_body">
+			<p class="home_body_p">用户登录</p>
+			<div class="home_body_index">
+				<div class="home_body_index_list home_body_index_user">
+					<div class="home_body_index_list_left home_body_index_user_left"><img src="image/user.png"/></div>
+					<div class="home_body_index_list_right home_body_index_user_right"><input id="userName" class="home_body_index_list_right_inta" type="text" placeholder="请输入用户名"/></div>
+				</div>
+				<div class="home_body_index_list home_body_index_pass">
+					<div class="home_body_index_list_left home_body_index_pass_left"><img src="image/pass.png"/></div>
+					<div class="home_body_index_list_right home_body_index_pass_right"><input id="passWord" class="home_body_index_list_right_intb" type="password" placeholder="请输入密码"/></div>
+				</div>
+				<button class="home_body_index_submit">登录</button>
+			</div>
+		</div>
+	</div>
+	<footer class="footer">
+		版权所有©浙江嘉丰机电有限公司 浙ICP备88888888号 技术支持：研发中心-技术部门
+	</footer>
+	<script type="text/javascript">
+		function d(id){
+			return document.getElementById(id);
+		}
+		function c(cls){
+			return document.getElementsByClassName(cls);
+		}
+		//让主体自适应整个页面的高度
+		//让登录窗体始终居中
+		if(window.innerHeight - c('header')[0].clientHeight - c('footer')[0].clientHeight > c('home_body_p')[0].clientHeight + c('home_body')[0].clientHeight){
+			c('home')[0].style.height = window.innerHeight - c('header')[0].clientHeight - c('footer')[0].clientHeight + 'px';
+			c('home_body')[0].style.top = (window.innerHeight - c('header')[0].clientHeight - c('footer')[0].clientHeight - c('home_body')[0].clientHeight)/2 + c('home_body_p')[0].clientHeight/2 + 'px';
+		}else{
+			c('home')[0].style.height = c('home_body_p')[0].clientHeight + c('home_body')[0].clientHeight + 'px';
+			c('home_body')[0].style.top = c('home_body_p')[0].clientHeight + 'px';
+		}
+
+		window.onresize = function(){
+			//让主体自适应整个页面的高度
+			if(window.innerHeight - c('header')[0].clientHeight - c('footer')[0].clientHeight > c('home_body_p')[0].clientHeight + c('home_body')[0].clientHeight){
+				c('home')[0].style.height = window.innerHeight - c('header')[0].clientHeight - c('footer')[0].clientHeight + 'px';
+				//让登录窗体始终居中
+				c('home_body')[0].style.top = (window.innerHeight - c('header')[0].clientHeight - c('footer')[0].clientHeight - c('home_body')[0].clientHeight)/2 + c('home_body_p')[0].clientHeight/2 + 'px';
+			}
+		}
+		//用户名与密码选中时前面图片的变化
+		c('home_body_index_list_right_inta')[0].onfocus = function(){
+			c('home_body_index_user')[0].style.backgroundColor = '#e0e0e0';
+			c('home_body_index_user_left')[0].children[0].src = 'image/usera.png';
+		}
+		c('home_body_index_list_right_inta')[0].onblur = function(){
+			c('home_body_index_user')[0].style.backgroundColor = '#f0f0f0';
+			c('home_body_index_user_left')[0].children[0].src = 'image/user.png';
+		}
+		c('home_body_index_list_right_intb')[0].onfocus = function(){
+			c('home_body_index_pass')[0].style.backgroundColor = '#e0e0e0';
+			c('home_body_index_pass_left')[0].children[0].src = 'image/passa.png';
+		}
+		c('home_body_index_list_right_intb')[0].onblur = function(){
+			c('home_body_index_pass')[0].style.backgroundColor = '#f0f0f0';
+			c('home_body_index_pass_left')[0].children[0].src = 'image/pass.png';
+		}
+
+		c('home_body_index_submit')[0].onclick = function(){
+			var userName = d('userName').value;
+			var passWord = d('passWord').value;
+			if(userName == ""){
+				alert('用户名不能为空');
+				return false;
+			}
+			if(passWord == ""){
+				alert('密码不能为空');
+				return false;
+			}
+			$.ajax({
+				type: 'post',
+				url: 'http://10.1.8.34:8080/bg-uc/activationDevice/login.json',
+				data: {
+					account: userName,
+					password: passWord,
+				},
+				success: function(data){
+					if(data.result == 1){
+						location.href = 'index.html';
+					}else{
+						alert('登录失败');
+					}
+				}
+			})
+		}
+	</script>
+</body>
+</html>

@@ -4,6 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
   <title>鸿丰集团稼动率系统</title>
+  <link rel="icon" type="image/x-icon" href="image/logo.jpg"/>
   <link rel="stylesheet" href="layui/css/layui.css"/>
   <script type="text/javascript" src="wm.js"></script>
   <script type="text/javascript" src="jquery-3.3.1.js"></script>
@@ -122,25 +123,26 @@
         listName = this.children[0].innerHTML;
         $.ajax({
           type: 'post',
-          url: 'http://10.1.8.45:8080/com/wk/time/select.json',
+          url: 'http://10.1.8.34:8080/bg-uc/activationWorkTime/getActivationWorkTime.json',
           data: {
             companyid: listValue,
           },
           success: function(data){
+            console.log(data);
             var layuiFormClone = document.getElementsByClassName('layui-form-clone');
             for(var i = layuiFormClone.length; i > 1; i--){
               layuiFormClone[i-1].parentNode.removeChild(layuiFormClone[i-1]);
             }
-            for(var i = 0; i < data.listData.length; i++){
+            for(var i = 0; i < data.result.length; i++){
               Block.append($('.layui-form-clone:eq(0)').clone().css('display','block'));
-              if(data.listData[i].flag == 1){
+              if(data.result[i].flag == 1){
                 layuiFormCloneDivItem[i+1].innerHTML = '√';
                 layuiFormCloneDivItem[i+1].style.border='1px #1B920C solid';
                 layuiFormCloneDivItem[i+1].style.backgroundColor='#20AA0E';
               }
-              startTime[i+1].value = data.listData[i].starttime;
-              endTime[i+1].value = data.listData[i].endtime;
-              timePeriod[i+1].value = data.listData[i].timeslot;
+              startTime[i+1].value = data.result[i].starttime;
+              endTime[i+1].value = data.result[i].endtime;
+              timePeriod[i+1].value = data.result[i].timeslot;
             }
           }
         })
@@ -200,11 +202,13 @@
       return false;
     }
     console.log(JSON.stringify(array));
+    console.log(listValue);
     $.ajax({
       type: 'post',
-      url: 'http://10.1.8.45:8080/com/wk/time/add.json',
+      url: 'http://10.1.8.34:8080/bg-uc/activationWorkTime/saveActivationWorkTime.json',
       data: {
-        obj: JSON.stringify(array),
+        workTimeDate: JSON.stringify(array),
+        companyid: listValue,
       },
       success: function(data){
         if(data.result == 1){

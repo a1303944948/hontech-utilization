@@ -149,6 +149,20 @@ function alern(text,name,btn,btns){
 	}
 }
 
+
+//如果引用该加载效果需先在全局css文件中加入以下样式
+/*
+.body_load_div_image{
+	animation: loadDiv 0.8s linear 0s infinite;
+}
+@keyframes loadDiv{
+	0%{
+		transform: rotate(0deg);
+	}
+	100%{
+		transform: rotate(360deg);
+	}
+}*/
 var loadingTimore;
 function loading(text){
 	if(text == undefined){

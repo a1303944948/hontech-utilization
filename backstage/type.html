@@ -4,6 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
   <title>鸿丰集团稼动率系统</title>
+  <link rel="icon" type="image/x-icon" href="image/logo.jpg"/>
   <link rel="stylesheet" href="layui/css/layui.css"/>
   <script type="text/javascript" src="jquery-3.3.1.js"></script>
 </head>
@@ -66,7 +67,7 @@
               <select id="companyname" lay-verify="required" lay-search="">
                 <option value="1">计次</option>
                 <!-- <option value="2">直流计次</option> -->
-                <option value="3">计时</option>
+                <option value="2">计时</option>
                 <!-- <option value="4">大电流计次</option>
                 <option value="5">开关量计次</option> -->
               </select>
@@ -109,7 +110,7 @@
     if(count == 0){
       $.ajax({
         type: 'post',
-        url: 'http://10.1.8.45:8080/com/cli/type/add.json',
+        url: 'http://10.1.8.34:8080/bg-uc/activationType/saveActivationType.json',
         data: {
           devtypecode: number,
           devtypename: name,
@@ -131,10 +132,11 @@
     }else{
       $.ajax({
         type: 'post',
-        url: 'http://10.1.8.45:8080/com/cli/type/update.json',
+        url: 'http://10.1.8.34:8080/bg-uc/activationType/updateActivationType.json',
         data: {
           devtypecode: number,
           devtypename: name,
+          port: port,
         },
         success: function(data){
           console.log(data);
@@ -154,30 +156,38 @@
   })
   $.ajax({
     type: 'post',
-    url: 'http://10.1.8.45:8080/com/cli/type/select.json',
+    url: 'http://10.1.8.34:8080/bg-uc/activationType/getAllActivationType.json',
     data: {},
     success: function(data){
       console.log(data);
       var layuiNav = $('#layui-nav')[0];
-      for(var i = 0; i < data.listData.length; i++){
+      for(var i = 0; i < data.result.length; i++){
         var li = document.createElement('li');
         li.className = 'layui-nav-item layui-nav-itemed list_li';
-        li.setAttribute('data-value',data.listData[i].devtypeid);
+        li.setAttribute('data-value',data.result[i].devtypecode);
+        li.setAttribute('data-port',data.result[i].port);
         var object = new Object();
         var a = document.createElement('a');
         a.href = 'javascript:void(0)';
-        a.innerHTML = data.listData[i].devtypename;
+        a.innerHTML = data.result[i].devtypename;
         li.appendChild(a);
         layuiNav.appendChild(li);
       }
       var number = $('#number');
       var name = $('#name');
+      var companyname = $('#companyname');
       for(var i = 0; i < document.getElementsByClassName('list_li').length; i++){
         (function(q){
           document.getElementsByClassName('list_li')[q].onclick = function(){
             count = 1;
             number.val(this.dataset.value);
             name.val(this.children[0].innerHTML);
+            companyname.val(this.dataset.port);
+            if(this.dataset.port == 1){
+              companyname.next('.layui-form-select').children('.layui-select-title').children('.layui-input').val('计次');
+            }else{
+              companyname.next('.layui-form-select').children('.layui-select-title').children('.layui-input').val('计时');
+            }
           }
         })(i)
       }
