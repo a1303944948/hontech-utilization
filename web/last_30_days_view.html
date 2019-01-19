@@ -72,7 +72,44 @@
 			sday = startDate.getDay();
 		}
 		console.log(machCode);
-		loading();
+
+		var tr;
+			for(var i = last30daysView.dateArr.length; i > 0; i--){
+				//console.log(last30daysView.dateArr[i-1]);
+				var color;
+				if(last30daysView.dateArr[i-1] == 1){
+					color = '#3ABC40';
+				}else{
+					color = '#FA5454';
+				}
+				startTime(i+1);
+				console.log(i,sdate,smonth,sday,last30daysView.dateArr[i-1]);
+				if(i == 30){
+					tr = creat('tr');
+					for(var j = 0; j < sday; j++){
+						var td = creat('td');
+						tr.appendChild(td);
+					}
+				}
+				var td = creat('td');
+				td.style.backgroundColor = color;
+				td.innerHTML = '<b>' + smonth + '<i></i></b><span>' + sdate + '</span>';
+				tr.appendChild(td);
+				if(sday == 6){
+					last30DaysViewFootTbody.appendChild(tr);
+					tr = creat('tr');
+				}
+				if(i == 1){
+					last30DaysViewFootTbody.appendChild(tr);
+				}
+			}
+		var appxsv = new Vue({
+		    el: '#last_30_days_view',
+		    data: {
+		        products: last30daysView,
+		    }
+		})
+		/*loading();
 		$.ajax({
 			type: 'post',
 			url: URL + 'com/cli/cmm/indexNearDetail.json',
@@ -128,7 +165,7 @@
 			error: function(){
 	        	loadingClear();
 			}
-		})
+		})*/
 
 
 

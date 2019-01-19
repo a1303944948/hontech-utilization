@@ -163,6 +163,7 @@ function alern(text,name,btn,btns){
 		transform: rotate(360deg);
 	}
 }*/
+//使用需导入加载图片 image/loding.png
 var loadingTimore;
 function loading(text){
 	if(text == undefined){

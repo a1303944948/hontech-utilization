@@ -87,6 +87,13 @@ var last30days = [
 	{machName: '折弯019',machId:'9',owner: 'dgjf',ownerText: '东莞嘉丰',text: '5',typeId: 'Bending',typeName: '折弯'},
 ]
 
+var typedev = [
+	{devtypename: '折弯',devtypeid: '1'},
+	{devtypename: '冲压',devtypeid: '2'},
+	{devtypename: '焊接',devtypeid: '3'},
+	{devtypename: '冲床',devtypeid: '4'},
+	{devtypename: '点焊',devtypeid: '5'},
+]
 //最近三十天详情页面接口
 //machId设备ID  machName设备名称  group组长  manager经理  total最近三十天总做功  stop未做功天数  start做功天数  
 //dateArr最近三十天做功明细一共三十条数据，做功传1，未做功传0，时间为当前的前一天为开始时间

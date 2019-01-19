@@ -51,7 +51,7 @@
           用户
         </a>
       </li>
-      <li class="layui-nav-item"><a href="">退出</a></li>
+      <li class="layui-nav-item" id="exit"><a href="javascript: void(0);">退出</a></li>
     </ul>
   </div>
   <div class="layui-side layui-bg-black">
@@ -97,22 +97,23 @@
             <input type="text" id="devname" lay-verify="title" autocomplete="off" placeholder="请输入设备名称" class="layui-input">
           </div>
         </div>
-        <div class="layui-form-item" style="width: 500px;">
-          <label class="layui-form-label">稼动率标准</label>
+        <div class="layui-form-item" style="width: 200px;">
+          <label class="layui-form-label">达标比例</label>
           <div class="layui-input-block">
-            <input type="text" id="cropmobility" lay-verify="title" autocomplete="off" placeholder="请输入稼动率基数" class="layui-input">
+            <input type="text" id="cropmobility" lay-verify="title" autocomplete="off" placeholder="请输入..." onkeyup="value=value.replace(/[^\d]/g,'');Number(value)>100? value=100:value=value;value.length>3?value='':value=value;" class="layui-input">
+            <span style="position: absolute; top: 12px; right: -20px;">%</span>
           </div>
         </div>
-        <div class="layui-form-item" style="width: 500px;">
+        <div class="layui-form-item" style="width: 200px;">
           <label class="layui-form-label">换算比例</label>
           <div class="layui-input-block">
-            <input type="number" id="conversion" lay-verify="title" autocomplete="off" placeholder="请输入换算比例" class="layui-input">
+            <input type="number" id="conversion" lay-verify="title" autocomplete="off" onkeyup="clearNoNum(this)" placeholder="请输入..." class="layui-input">
           </div>
         </div>
-        <div class="layui-form-item" style="width: 500px;">
+        <div class="layui-form-item" style="width: 200px;">
           <label class="layui-form-label">宽放系数</label>
           <div class="layui-input-block">
-            <input type="number" id="widening" lay-verify="title" autocomplete="off" placeholder="请输入宽放系数" class="layui-input">
+            <input type="number" id="widening" lay-verify="title" autocomplete="off" onkeyup="clearNoNum(this)" placeholder="请输入..." class="layui-input">
           </div>
         </div>
         <div class="layui-form-item" style="width: 500px;">
@@ -176,11 +177,19 @@
   </div>
 </div>
 <script type="text/javascript">
+  if(sessionStorage.name != 1){
+    alert('请登录！');
+    location.href = 'login.html';
+  }
+  $('#exit').click(function(){
+    sessionStorage.removeItem('name');
+    location.href = 'login.html';
+  })
   //设备类别下拉框渲染
   var Devtypeid = document.getElementById('devtypeid');
   $.ajax({
     type: 'post',
-    url: 'http://10.1.8.34:8080/bg-uc/activationType/getAllActivationType.json',
+    url: 'https://api.hontech-rdcenter.com:8033/jdl/activationType/getAllActivationType.json',
     data: {},
     success: function(data){
       console.log(data);
@@ -284,7 +293,7 @@
     if(count == 0){
       $.ajax({
         type: 'post',
-        url: 'http://10.1.8.34:8080/bg-uc/activationDevice/saveActivationDevice.json',
+        url: 'https://api.hontech-rdcenter.com:8033/jdl/activationDevice/saveActivationDevice.json',
         data: {
           deviceData: JSON.stringify(deviceData),
         },
@@ -304,7 +313,7 @@
     }else{
       $.ajax({
         type: 'post',
-        url: 'http://10.1.8.34:8080/bg-uc/activationDevice/updateActivationDevice.json',
+        url: 'https://api.hontech-rdcenter.com:8033/jdl/activationDevice/updateActivationDevice.json',
         data: {
           deviceData: JSON.stringify(deviceData),
         },
@@ -327,7 +336,7 @@
   var layuiNav = $('#layui-nav')[0];
   $.ajax({
     type: 'post',
-    url: 'http://10.1.8.34:8080/bg-uc/activationType/getAllActivationType.json',
+    url: 'https://api.hontech-rdcenter.com:8033/jdl/activationType/getAllActivationType.json',
     data: {},
     async: false,
     success: function(data){
@@ -348,7 +357,7 @@
   })
   $.ajax({
     type: 'post',
-    url: 'http://10.1.8.34:8080/bg-uc/activationDevice/getAllActivationDevice.json',
+    url: 'https://api.hontech-rdcenter.com:8033/jdl/activationDevice/getAllActivationDevice.json',
     data: {},
     success: function(data){
       console.log(data);
@@ -447,6 +456,16 @@
   $('#rest').click(function(){
     count = 0;
   })
+
+  function clearNoNum(obj){ 
+    obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
+    obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的
+    obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$","."); 
+    obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数  
+    if(obj.value.indexOf(".")< 0 && obj.value !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额 
+        obj.value= parseFloat(obj.value); 
+    } 
+  } 
 </script>
 <script src="layui/layui.js"></script>
 <script>

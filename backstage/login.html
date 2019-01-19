@@ -233,13 +233,15 @@
 			}
 			$.ajax({
 				type: 'post',
-				url: 'http://10.1.8.34:8080/bg-uc/activationDevice/login.json',
+				url: 'https://api.hontech-rdcenter.com:8033/jdl/activationDevice/login.json',
 				data: {
 					account: userName,
 					password: passWord,
 				},
 				success: function(data){
+					console.log(data);
 					if(data.result == 1){
+						sessionStorage.name = data.result;
 						location.href = 'index.html';
 					}else{
 						alert('登录失败');

@@ -53,7 +53,7 @@
 	</footer>
 	<script type="text/javascript" src="js/index.js"></script>
 	<script type="text/javascript">
-		ajax('post',URL + 'com/cli/type/select.json',"",function(data){
+		/*ajax('post',URL + 'com/cli/type/select.json',"",function(data){
 	        var appType = new Vue({
 	            el: '#record_header_type',
 	            data: {
@@ -62,7 +62,14 @@
 	        })
 		},function(err){
 			console.log(err);
-		},'json');
+		},'json');*/
+
+        var appType = new Vue({
+            el: '#record_header_type',
+            data: {
+                products: typedev,
+            }
+        })
 
 		var appz;
 
@@ -97,7 +104,14 @@
 
 	    var recordHeaderCompany = d('record_header_company').value;
 	    var recordHeaderType = d('record_header_type').value;
-	    loading();
+	    
+		appz = new Vue({
+		    el: '#record_home',
+		    data: {
+		        products: recordObj,
+		    }
+		})
+	    /*loading();
 		ajax('post',URL + 'com/cli/cmm/indexDev.json','companyid='+recordHeaderCompany+'&devtypeid='+recordHeaderType,function(data){
 			console.log(data);
 	        loadingClear();
@@ -110,7 +124,7 @@
 		},function(err){
 	        loadingClear();
 			console.log(err);
-		},'json')
+		},'json')*/
 	</script>
 </body>
 </html>

@@ -126,7 +126,7 @@
 	<script type="text/javascript" src="js/index.js"></script>
 	<script type="text/javascript">
 
-		ajax('post',URL + 'com/cli/type/select.json',"",function(data){
+		/*ajax('post',URL + 'com/cli/type/select.json',"",function(data){
 	        var appType = new Vue({
 	            el: '#last_header_type',
 	            data: {
@@ -135,7 +135,15 @@
 	        })
 		},function(err){
 			console.log(err);
-		},'json');
+		},'json');*/
+
+		
+        var appType = new Vue({
+            el: '#last_header_type',
+            data: {
+                products: typedev,
+            }
+        })
 
 		var appxs;
 		var rankingHeaderSearch = c('ranking_header_search')[0];
@@ -158,7 +166,18 @@
 
 		var lastHeaderCompany = d('last_header_company').value;
 		var lastHeaderType = d('last_header_type').value;
-		loading();
+		appxs = new Vue({
+		    el: '#last_30_days',
+		    data: {
+		        products: last30days,
+		    },
+		    methods: {
+		        greet: function (machId) {
+		            location.href = 'last_30_days_view.html?machId=' + machId;
+		        }
+		    }
+		})
+		/*loading();
 		ajax('post',URL + 'com/cli/cmm/indexNear.json','companyid='+lastHeaderCompany+'&devtypeid='+lastHeaderType,function(data){
 			console.log(data);
 	        loadingClear();
@@ -179,7 +198,7 @@
 		},function(err){
 	        loadingClear();
 			console.log(err);
-		},'json')
+		},'json')*/
 	</script>
 </body>
 </html>

@@ -34,7 +34,7 @@
           用户
         </a>
       </li>
-      <li class="layui-nav-item"><a href="">退出</a></li>
+      <li class="layui-nav-item" id="exit"><a href="javascript: void(0);">退出</a></li>
     </ul>
   </div>
   <div class="layui-side layui-bg-black">
@@ -86,6 +86,14 @@
 </div>
 <script src="layui/layui.js"></script>
 <script>
+  if(sessionStorage.name != 1){
+    alert('请登录！');
+    location.href = 'login.html';
+  }
+  $('#exit').click(function(){
+    sessionStorage.removeItem('name');
+    location.href = 'login.html';
+  })
   var count = 0;
   $('#submit').click(function(){
     var number = $('#number').val();
@@ -110,7 +118,7 @@
     if(count == 0){
       $.ajax({
         type: 'post',
-        url: 'http://10.1.8.34:8080/bg-uc/activationType/saveActivationType.json',
+        url: 'https://api.hontech-rdcenter.com:8033/jdl/activationType/saveActivationType.json',
         data: {
           devtypecode: number,
           devtypename: name,
@@ -132,7 +140,7 @@
     }else{
       $.ajax({
         type: 'post',
-        url: 'http://10.1.8.34:8080/bg-uc/activationType/updateActivationType.json',
+        url: 'https://api.hontech-rdcenter.com:8033/jdl/activationType/updateActivationType.json',
         data: {
           devtypecode: number,
           devtypename: name,
@@ -156,40 +164,43 @@
   })
   $.ajax({
     type: 'post',
-    url: 'http://10.1.8.34:8080/bg-uc/activationType/getAllActivationType.json',
+    url: 'https://api.hontech-rdcenter.com:8033/jdl/activationType/getAllActivationType.json',
     data: {},
     success: function(data){
       console.log(data);
-      var layuiNav = $('#layui-nav')[0];
-      for(var i = 0; i < data.result.length; i++){
-        var li = document.createElement('li');
-        li.className = 'layui-nav-item layui-nav-itemed list_li';
-        li.setAttribute('data-value',data.result[i].devtypecode);
-        li.setAttribute('data-port',data.result[i].port);
-        var object = new Object();
-        var a = document.createElement('a');
-        a.href = 'javascript:void(0)';
-        a.innerHTML = data.result[i].devtypename;
-        li.appendChild(a);
-        layuiNav.appendChild(li);
-      }
-      var number = $('#number');
-      var name = $('#name');
-      var companyname = $('#companyname');
-      for(var i = 0; i < document.getElementsByClassName('list_li').length; i++){
-        (function(q){
-          document.getElementsByClassName('list_li')[q].onclick = function(){
-            count = 1;
-            number.val(this.dataset.value);
-            name.val(this.children[0].innerHTML);
-            companyname.val(this.dataset.port);
-            if(this.dataset.port == 1){
-              companyname.next('.layui-form-select').children('.layui-select-title').children('.layui-input').val('计次');
-            }else{
-              companyname.next('.layui-form-select').children('.layui-select-title').children('.layui-input').val('计时');
+      console.log(JSON.stringify(data));
+      if(JSON.stringify(data) != '{}'){
+        var layuiNav = $('#layui-nav')[0];
+        for(var i = 0; i < data.result.length; i++){
+          var li = document.createElement('li');
+          li.className = 'layui-nav-item layui-nav-itemed list_li';
+          li.setAttribute('data-value',data.result[i].devtypecode);
+          li.setAttribute('data-port',data.result[i].port);
+          var object = new Object();
+          var a = document.createElement('a');
+          a.href = 'javascript:void(0)';
+          a.innerHTML = data.result[i].devtypename;
+          li.appendChild(a);
+          layuiNav.appendChild(li);
+        }
+        var number = $('#number');
+        var name = $('#name');
+        var companyname = $('#companyname');
+        for(var i = 0; i < document.getElementsByClassName('list_li').length; i++){
+          (function(q){
+            document.getElementsByClassName('list_li')[q].onclick = function(){
+              count = 1;
+              number.val(this.dataset.value);
+              name.val(this.children[0].innerHTML);
+              companyname.val(this.dataset.port);
+              if(this.dataset.port == 1){
+                companyname.next('.layui-form-select').children('.layui-select-title').children('.layui-input').val('计次');
+              }else{
+                companyname.next('.layui-form-select').children('.layui-select-title').children('.layui-input').val('计时');
+              }
             }
-          }
-        })(i)
+          })(i)
+        }
       }
     }
   })
@@ -197,6 +208,20 @@
           count = 0;
   })
 
+  /*var array = ['2018120000000','2018121000000'];
+  $.ajax({
+    type: 'post',
+    url: 'https://api.hontech-rdcenter.com:8033/jdl/activationReportdata/calculateActivation.json',
+    contentType: 'application/json',
+    data: {
+      companyid: '123',
+      devtypecode: '123',
+      paramTime: JSON.stringify(array)
+    },
+    success: function (msg) {
+      console.log(msg);
+    }
+  })*/
   layui.use(['form', 'layedit', 'laydate'], function(){
 
     //日期

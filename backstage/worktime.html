@@ -12,7 +12,7 @@
 <style type="text/css">
   .layui-form-clone_div{
     display: inline-block; 
-    line-height: 38px; 
+    line-height: 38px;
     margin-right: 10px;
   }
   .layui-form-clone_div_item{
@@ -53,7 +53,7 @@
           用户
         </a>
       </li>
-      <li class="layui-nav-item"><a href="">退出</a></li>
+      <li class="layui-nav-item" id="exit"><a href="javascript: void(0);">退出</a></li>
     </ul>
   </div>
   <div class="layui-side layui-bg-black">
@@ -89,7 +89,7 @@
         <div class="layui-form-item" style="width: 260px !important; display: inline-block;">
           <label class="layui-form-label">时间段</label>
           <div class="layui-input-block">
-            <input type="text" lay-verify="title" autocomplete="off" placeholder="请输入时间段名称" class="layui-input time_period">
+            <input type="text" lay-verify="title" autocomplete="off" placeholder="请输入时间段名称" disabled="disabled" class="layui-input time_period">
           </div>
         </div>
         <button class="layui-btn layui-btn-primary delete" type="button" style="margin-left: 15px;">删除</button>
@@ -102,6 +102,14 @@
 </div>
 <script src="layui/layui.js"></script>
 <script>
+  if(sessionStorage.name != 1){
+    alert('请登录！');
+    location.href = 'login.html';
+  }
+  $('#exit').click(function(){
+    sessionStorage.removeItem('name');
+    location.href = 'login.html';
+  })
   var Creat = $('#creat');
   var Block = $('#layui-form-block');
   var Delete = document.getElementsByClassName('delete');
@@ -123,7 +131,7 @@
         listName = this.children[0].innerHTML;
         $.ajax({
           type: 'post',
-          url: 'http://10.1.8.34:8080/bg-uc/activationWorkTime/getActivationWorkTime.json',
+          url: 'https://api.hontech-rdcenter.com:8033/jdl/activationWorkTime/getActivationWorkTime.json',
           data: {
             companyid: listValue,
           },
@@ -140,9 +148,17 @@
                 layuiFormCloneDivItem[i+1].style.border='1px #1B920C solid';
                 layuiFormCloneDivItem[i+1].style.backgroundColor='#20AA0E';
               }
-              startTime[i+1].value = data.result[i].starttime;
-              endTime[i+1].value = data.result[i].endtime;
+              startTime[i+1].value = data.result[i].starttime.substring(0,data.result[i].starttime.length-3);
+              endTime[i+1].value =  data.result[i].endtime.substring(0,data.result[i].endtime.length-3);
               timePeriod[i+1].value = data.result[i].timeslot;
+              timePeriod[i+1].name = data.result[i].mark;
+            }
+            for(var i = 0; i < Delete.length; i++){
+              (function(q){
+                Delete[q].onclick = function(){
+                  this.parentNode.parentNode.removeChild(this.parentNode);
+                }
+              })(i)
             }
           }
         })
@@ -150,7 +166,58 @@
     })(i)
   }
   Creat.click(function(){
-    Block.append($('.layui-form-clone:eq(0)').clone().css('display','block'));
+    if($('.layui-form-clone').length > 1){
+      alert('请先删除所有的时间段再来添加！');
+      return false;
+    };
+    for(var i = 0; i < 6; i++){
+      Block.append($('.layui-form-clone:eq(0)').clone().css('display','block'));
+      var count = i + 1;
+      switch(count){
+        case 1:
+          startTime[count].value = "07:40";
+          endTime[count].value = "11:50";
+          timePeriod[count].value = "上午";
+          timePeriod[count].name = "A";
+          break;
+        case 2:
+          startTime[count].value = "13:00";
+          endTime[count].value = "17:10";
+          timePeriod[count].value = "下午";
+          timePeriod[count].name = "B";
+          break;
+        case 3:
+          startTime[count].value = "17:40";
+          endTime[count].value = "20:40";
+          timePeriod[count].value = "加班";
+          timePeriod[count].name = "C";
+          break;
+        case 4:
+          startTime[count].value = "21:00";
+          endTime[count].value = "24:00";
+          timePeriod[count].value = "夜班1";
+          timePeriod[count].name = "D";
+          break;
+        case 5:
+          startTime[count].value = "00:00";
+          endTime[count].value = "03:00";
+          timePeriod[count].value = "夜班2";
+          timePeriod[count].name = "E";
+          layuiFormCloneDivItem[count].style.border='1px #1B920C solid';
+          layuiFormCloneDivItem[count].style.backgroundColor='#20AA0E';
+          layuiFormCloneDivItem[count].innerHTML='√';
+          break;
+        case 6:
+          startTime[count].value = "03:00";
+          endTime[count].value = "07:35";
+          timePeriod[count].value = "夜班3";
+          timePeriod[count].name = "F";
+          layuiFormCloneDivItem[count].style.border='1px #1B920C solid';
+          layuiFormCloneDivItem[count].style.backgroundColor='#20AA0E';
+          layuiFormCloneDivItem[count].innerHTML='√';
+          break;
+      }
+    }
     for(var i = 0; i < Delete.length; i++){
       (function(q){
         Delete[q].onclick = function(){
@@ -183,6 +250,7 @@
         errorString += "第"+i+"行结束时间不能为空！<br/>"
       }
       object.timeslot = timePeriod[i].value;
+      object.mark = timePeriod[i].name;
       if(timePeriod[i].value == ""){
         errorString += "第"+i+"行时间段名称不能为空！<br/>"
       }
@@ -205,7 +273,7 @@
     console.log(listValue);
     $.ajax({
       type: 'post',
-      url: 'http://10.1.8.34:8080/bg-uc/activationWorkTime/saveActivationWorkTime.json',
+      url: 'https://api.hontech-rdcenter.com:8033/jdl/activationWorkTime/saveActivationWorkTime.json',
       data: {
         workTimeDate: JSON.stringify(array),
         companyid: listValue,

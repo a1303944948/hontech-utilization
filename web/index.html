@@ -138,7 +138,7 @@
 		var rankingHomeBodyItem = c('ranking_home_body_item');	//设备列表
 		var rankingHomeBodyItemContext = c('ranking_home_body_item_context');	//设备详情
 
-		$.ajax({    //获取设备类别
+		/*$.ajax({    //获取设备类别
 		    type: 'post',
 		    url: URL + 'com/cli/type/select.json',
 		    data: {},
@@ -146,11 +146,18 @@
 		        var appType = new Vue({
 		            el: '#ranking_header_type',
 		            data: {
-		                products: data.listData,
+		                products: typedev,
 		            }
 		        })
 		    }
-		});
+		});*/
+
+        var appType = new Vue({
+            el: '#ranking_header_type',
+            data: {
+                products: typedev,
+            }
+        })
 
 		var apps;
 		c('ranking_header_search')[0].ontouchend = function(){
@@ -176,7 +183,20 @@
 	    var rankingHeaderType = d('ranking_header_type').value;
 	    d('ranking_header_date').children[0].selected = 'selected';
 	    var rankingHeaderDate = d('ranking_header_date').value;
-	    loading();
+	    
+        apps = new Vue({
+		    el: '#ranking_home',
+		    data: {
+		        products: rankObj,//rankObj
+		    },
+		    methods: {
+		        greet: function (machId) {
+    				var rankingHeaderDate = d('ranking_header_date').value;
+		            location.href = 'index-detail.html?machId=' + machId + '&dataId=' + rankingHeaderDate;
+		        }
+		    }
+		})
+	    /*loading();
 	    $.ajax({
 	        type: 'post',
 	        url: URL +  'com/cli/cmm/index.json',
@@ -206,7 +226,7 @@
 	        error: function(){
 	        	loadingClear();
 	        }
-	    })
+	    })*/
 		/*var count = -1;
 		for(var i = 0; i < rankingHomeBodyItem.length; i++){
 			(function(q){
