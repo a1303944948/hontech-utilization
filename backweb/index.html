@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>鸿丰集团稼动率-排名统计</title>
+	<link rel="icon" type="image/x-icon" href="image/logo.jpg"/>
+	<link rel="stylesheet" type="text/css" href="css/global.css"/>
+	<script type="text/javascript" src="js/wm.js"></script>
+</head>
+<body>
+	<header>
+		<div class="header_left"></div>
+		<div class="header_title">鸿丰集团稼动率</div>
+		<div class="header_right">
+			<div class="header_right_index">排名统计&nbsp;</div>
+			<div class="header_right_black">
+				<div class="header_right_black_list header_right_black_total" data-value="1">排名统计</div>
+				<div class="header_right_black_list header_right_black_record" data-value="2">记录报表</div>
+				<div class="header_right_black_list header_right_black_noWork" data-value="3">无功统计</div>
+				<div class="header_right_black_list header_right_black_edit" data-value="4">修改密码</div>
+			</div>
+		</div>
+		<div class="header_center wm_pack">
+			<input class="wm_select" data-select="东莞嘉丰,浙江嘉丰" type="text" placeholder="请选择公司.."/>
+			<input class="wm_select" data-select="折弯,冲压,点焊,手工焊接,机器焊接" type="text" placeholder="请选择设备类型.."/>
+			<input class="wm_datapicker wm_datapicker_time" placeholder="选择开始时间" type="text"/>
+			<input class="wm_datapicker wm_datapicker_time" placeholder="选择结束时间" type="text"/>
+		</div>
+	</header>
+	<div class="header"></div>
+	<footer>
+		<div class="viewbar"></div>
+		<div class="textbar"></div>
+		<div class="clear"></div>
+	</footer>
+	<script type="text/javascript">
+		c('header_right')[0].onmouseover = function(){
+			c('header_right_black')[0].style.bottom = -c('header_right_black')[0].clientHeight + 'px';
+		}
+		c('header_right')[0].onmouseout = function(){
+			c('header_right_black')[0].style.bottom = '0px';
+		}
+		c('header_left')[0].onclick = function(){
+			sessionStorage.menu = 1;
+			window.location.href = 'index.html';
+		}
+		c('header_right_black_total')[0].onclick = function(){
+			sessionStorage.menu = 1;
+			window.location.href = 'index.html';
+		}
+		c('header_right_black_record')[0].onclick = function(){
+			sessionStorage.menu = 2;
+			window.location.href = 'index.html';
+		}
+		c('header_right_black_noWork')[0].onclick = function(){
+			sessionStorage.menu = 3;
+			window.location.href = 'index.html';
+		}
+		c('header_right_black_edit')[0].onclick = function(){
+			alern('暂未实现');
+		}
+		for(var i = 0; i < c('header_right_black_list').length; i++){
+			if(sessionStorage.menu == c('header_right_black_list')[i].dataset.value){
+				c('header_right_index')[0].innerHTML = c('header_right_black_list')[i].innerHTML + '&nbsp;';
+			};
+		}
+	</script>
+</body>
+</html>
